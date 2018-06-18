@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.ico.service.data.dao.UserAssetMapper">
+  <resultMap id="BaseResultMap" type="com.sky.ico.service.data.entity.UserAsset">
+    <id column="asset_id" jdbcType="BIGINT" property="assetId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="coin_id" jdbcType="BIGINT" property="coinId" />
+    <result column="coin_name" jdbcType="VARCHAR" property="coinName" />
+    <result column="coin_token" jdbcType="VARCHAR" property="coinToken" />
+    <result column="is_cash" jdbcType="TINYINT" property="isCash" />
+    <result column="is_recharge" jdbcType="TINYINT" property="isRecharge" />
+    <result column="is_trade" jdbcType="TINYINT" property="isTrade" />
+    <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="balance_amount" jdbcType="DECIMAL" property="balanceAmount" />
+    <result column="frozen_amount" jdbcType="DECIMAL" property="frozenAmount" />
+    <result column="cash_frozen_amount" jdbcType="DECIMAL" property="cashFrozenAmount" />
+    <result column="buy_frozen_amount" jdbcType="DECIMAL" property="buyFrozenAmount" />
+    <result column="sell_frozen_amount" jdbcType="DECIMAL" property="sellFrozenAmount" />
+    <result column="asset_status" jdbcType="TINYINT" property="assetStatus" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="wallet_id" jdbcType="VARCHAR" property="walletId" />
+    <result column="wallet_name" jdbcType="VARCHAR" property="walletName" />
+    <result column="wallet_mode" jdbcType="TINYINT" property="walletMode" />
+    <result column="wallet_address" jdbcType="VARCHAR" property="walletAddress" />
+    <result column="eth_address_pwd" jdbcType="VARCHAR" property="ethAddressPwd" />
+    <result column="eth_address_iv" jdbcType="VARCHAR" property="ethAddressIv" />
+    <result column="eth_address_phrase" jdbcType="VARCHAR" property="ethAddressPhrase" />
+    <result column="eth_address_file_path" jdbcType="VARCHAR" property="ethAddressFilePath" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    asset_id, user_id, coin_id, coin_name, coin_token, is_cash, is_recharge, is_trade, 
+    total_amount, balance_amount, frozen_amount, cash_frozen_amount, buy_frozen_amount, 
+    sell_frozen_amount, asset_status, version, wallet_id, wallet_name, wallet_mode, wallet_address, 
+    eth_address_pwd, eth_address_iv, eth_address_phrase, eth_address_file_path, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_asset
+    where asset_id = #{assetId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user_asset
+    where asset_id = #{assetId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sky.ico.service.data.entity.UserAsset">
+    insert into t_user_asset (asset_id, user_id, coin_id, 
+      coin_name, coin_token, is_cash, 
+      is_recharge, is_trade, total_amount, 
+      balance_amount, frozen_amount, cash_frozen_amount, 
+      buy_frozen_amount, sell_frozen_amount, asset_status, 
+      version, wallet_id, wallet_name, 
+      wallet_mode, wallet_address, eth_address_pwd, 
+      eth_address_iv, eth_address_phrase, eth_address_file_path, 
+      create_time, update_time)
+    values (#{assetId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{coinId,jdbcType=BIGINT}, 
+      #{coinName,jdbcType=VARCHAR}, #{coinToken,jdbcType=VARCHAR}, #{isCash,jdbcType=TINYINT}, 
+      #{isRecharge,jdbcType=TINYINT}, #{isTrade,jdbcType=TINYINT}, #{totalAmount,jdbcType=DECIMAL}, 
+      #{balanceAmount,jdbcType=DECIMAL}, #{frozenAmount,jdbcType=DECIMAL}, #{cashFrozenAmount,jdbcType=DECIMAL}, 
+      #{buyFrozenAmount,jdbcType=DECIMAL}, #{sellFrozenAmount,jdbcType=DECIMAL}, #{assetStatus,jdbcType=TINYINT}, 
+      #{version,jdbcType=INTEGER}, #{walletId,jdbcType=VARCHAR}, #{walletName,jdbcType=VARCHAR}, 
+      #{walletMode,jdbcType=TINYINT}, #{walletAddress,jdbcType=VARCHAR}, #{ethAddressPwd,jdbcType=VARCHAR}, 
+      #{ethAddressIv,jdbcType=VARCHAR}, #{ethAddressPhrase,jdbcType=VARCHAR}, #{ethAddressFilePath,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+
+  <insert id="insertList" parameterType="com.sky.ico.service.data.entity.UserAsset">
+    insert into t_user_asset (asset_id, user_id, coin_id,
+    coin_name, coin_token, is_cash,
+    is_recharge, is_trade, total_amount,
+    balance_amount, frozen_amount, cash_frozen_amount,
+    buy_frozen_amount, sell_frozen_amount, asset_status,
+    version, wallet_id, wallet_name,
+    wallet_mode, wallet_address, eth_address_pwd,
+    eth_address_iv, eth_address_phrase, eth_address_file_path,
+    create_time, update_time)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+    (#{item.assetId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.coinId,jdbcType=BIGINT},
+    #{item.coinName,jdbcType=VARCHAR}, #{item.coinToken,jdbcType=VARCHAR}, #{item.isCash,jdbcType=TINYINT},
+    #{item.isRecharge,jdbcType=TINYINT}, #{item.isTrade,jdbcType=TINYINT}, #{item.totalAmount,jdbcType=DECIMAL},
+    #{item.balanceAmount,jdbcType=DECIMAL}, #{item.frozenAmount,jdbcType=DECIMAL}, #{item.cashFrozenAmount,jdbcType=DECIMAL},
+    #{item.buyFrozenAmount,jdbcType=DECIMAL}, #{item.sellFrozenAmount,jdbcType=DECIMAL}, #{item.assetStatus,jdbcType=TINYINT},
+    #{item.version,jdbcType=INTEGER}, #{item.walletId,jdbcType=VARCHAR}, #{item.walletName,jdbcType=VARCHAR},
+    #{item.walletMode,jdbcType=TINYINT}, #{item.walletAddress,jdbcType=VARCHAR}, #{item.ethAddressPwd,jdbcType=VARCHAR},
+    #{item.ethAddressIv,jdbcType=VARCHAR}, #{item.ethAddressPhrase,jdbcType=VARCHAR}, #{item.ethAddressFilePath,jdbcType=VARCHAR},
+    #{item.createTime,jdbcType=TIMESTAMP}, #{item.updateTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.sky.ico.service.data.entity.UserAsset">
+    insert into t_user_asset
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="assetId != null">
+        asset_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="coinId != null">
+        coin_id,
+      </if>
+      <if test="coinName != null">
+        coin_name,
+      </if>
+      <if test="coinToken != null">
+        coin_token,
+      </if>
+      <if test="isCash != null">
+        is_cash,
+      </if>
+      <if test="isRecharge != null">
+        is_recharge,
+      </if>
+      <if test="isTrade != null">
+        is_trade,
+      </if>
+      <if test="totalAmount != null">
+        total_amount,
+      </if>
+      <if test="balanceAmount != null">
+        balance_amount,
+      </if>
+      <if test="frozenAmount != null">
+        frozen_amount,
+      </if>
+      <if test="cashFrozenAmount != null">
+        cash_frozen_amount,
+      </if>
+      <if test="buyFrozenAmount != null">
+        buy_frozen_amount,
+      </if>
+      <if test="sellFrozenAmount != null">
+        sell_frozen_amount,
+      </if>
+      <if test="assetStatus != null">
+        asset_status,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="walletId != null">
+        wallet_id,
+      </if>
+      <if test="walletName != null">
+        wallet_name,
+      </if>
+      <if test="walletMode != null">
+        wallet_mode,
+      </if>
+      <if test="walletAddress != null">
+        wallet_address,
+      </if>
+      <if test="ethAddressPwd != null">
+        eth_address_pwd,
+      </if>
+      <if test="ethAddressIv != null">
+        eth_address_iv,
+      </if>
+      <if test="ethAddressPhrase != null">
+        eth_address_phrase,
+      </if>
+      <if test="ethAddressFilePath != null">
+        eth_address_file_path,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="assetId != null">
+        #{assetId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="coinId != null">
+        #{coinId,jdbcType=BIGINT},
+      </if>
+      <if test="coinName != null">
+        #{coinName,jdbcType=VARCHAR},
+      </if>
+      <if test="coinToken != null">
+        #{coinToken,jdbcType=VARCHAR},
+      </if>
+      <if test="isCash != null">
+        #{isCash,jdbcType=TINYINT},
+      </if>
+      <if test="isRecharge != null">
+        #{isRecharge,jdbcType=TINYINT},
+      </if>
+      <if test="isTrade != null">
+        #{isTrade,jdbcType=TINYINT},
+      </if>
+      <if test="totalAmount != null">
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null">
+        #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenAmount != null">
+        #{frozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashFrozenAmount != null">
+        #{cashFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="buyFrozenAmount != null">
+        #{buyFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellFrozenAmount != null">
+        #{sellFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="assetStatus != null">
+        #{assetStatus,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="walletId != null">
+        #{walletId,jdbcType=VARCHAR},
+      </if>
+      <if test="walletName != null">
+        #{walletName,jdbcType=VARCHAR},
+      </if>
+      <if test="walletMode != null">
+        #{walletMode,jdbcType=TINYINT},
+      </if>
+      <if test="walletAddress != null">
+        #{walletAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressPwd != null">
+        #{ethAddressPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressIv != null">
+        #{ethAddressIv,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressPhrase != null">
+        #{ethAddressPhrase,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressFilePath != null">
+        #{ethAddressFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.ico.service.data.entity.UserAsset">
+    update t_user_asset
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="coinId != null">
+        coin_id = #{coinId,jdbcType=BIGINT},
+      </if>
+      <if test="coinName != null">
+        coin_name = #{coinName,jdbcType=VARCHAR},
+      </if>
+      <if test="coinToken != null">
+        coin_token = #{coinToken,jdbcType=VARCHAR},
+      </if>
+      <if test="isCash != null">
+        is_cash = #{isCash,jdbcType=TINYINT},
+      </if>
+      <if test="isRecharge != null">
+        is_recharge = #{isRecharge,jdbcType=TINYINT},
+      </if>
+      <if test="isTrade != null">
+        is_trade = #{isTrade,jdbcType=TINYINT},
+      </if>
+      <if test="totalAmount != null">
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null">
+        balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenAmount != null">
+        frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashFrozenAmount != null">
+        cash_frozen_amount = #{cashFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="buyFrozenAmount != null">
+        buy_frozen_amount = #{buyFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellFrozenAmount != null">
+        sell_frozen_amount = #{sellFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="assetStatus != null">
+        asset_status = #{assetStatus,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="walletId != null">
+        wallet_id = #{walletId,jdbcType=VARCHAR},
+      </if>
+      <if test="walletName != null">
+        wallet_name = #{walletName,jdbcType=VARCHAR},
+      </if>
+      <if test="walletMode != null">
+        wallet_mode = #{walletMode,jdbcType=TINYINT},
+      </if>
+      <if test="walletAddress != null">
+        wallet_address = #{walletAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressPwd != null">
+        eth_address_pwd = #{ethAddressPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressIv != null">
+        eth_address_iv = #{ethAddressIv,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressPhrase != null">
+        eth_address_phrase = #{ethAddressPhrase,jdbcType=VARCHAR},
+      </if>
+      <if test="ethAddressFilePath != null">
+        eth_address_file_path = #{ethAddressFilePath,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where asset_id = #{assetId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.ico.service.data.entity.UserAsset">
+    update t_user_asset
+    set user_id = #{userId,jdbcType=BIGINT},
+      coin_id = #{coinId,jdbcType=BIGINT},
+      coin_name = #{coinName,jdbcType=VARCHAR},
+      coin_token = #{coinToken,jdbcType=VARCHAR},
+      is_cash = #{isCash,jdbcType=TINYINT},
+      is_recharge = #{isRecharge,jdbcType=TINYINT},
+      is_trade = #{isTrade,jdbcType=TINYINT},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+      cash_frozen_amount = #{cashFrozenAmount,jdbcType=DECIMAL},
+      buy_frozen_amount = #{buyFrozenAmount,jdbcType=DECIMAL},
+      sell_frozen_amount = #{sellFrozenAmount,jdbcType=DECIMAL},
+      asset_status = #{assetStatus,jdbcType=TINYINT},
+      version = #{version,jdbcType=INTEGER},
+      wallet_id = #{walletId,jdbcType=VARCHAR},
+      wallet_name = #{walletName,jdbcType=VARCHAR},
+      wallet_mode = #{walletMode,jdbcType=TINYINT},
+      wallet_address = #{walletAddress,jdbcType=VARCHAR},
+      eth_address_pwd = #{ethAddressPwd,jdbcType=VARCHAR},
+      eth_address_iv = #{ethAddressIv,jdbcType=VARCHAR},
+      eth_address_phrase = #{ethAddressPhrase,jdbcType=VARCHAR},
+      eth_address_file_path = #{ethAddressFilePath,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where asset_id = #{assetId,jdbcType=BIGINT}
+  </update>
+</mapper>

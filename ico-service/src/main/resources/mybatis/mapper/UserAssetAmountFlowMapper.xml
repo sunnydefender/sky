@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.ico.service.data.dao.UserAssetAmountFlowMapper">
+  <resultMap id="BaseResultMap" type="com.sky.ico.service.data.entity.UserAssetAmountFlow">
+    <id column="flow_id" jdbcType="BIGINT" property="flowId" />
+    <result column="asset_id" jdbcType="BIGINT" property="assetId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="flow_mode" jdbcType="TINYINT" property="flowMode" />
+    <result column="coin_id" jdbcType="BIGINT" property="coinId" />
+    <result column="coin_name" jdbcType="VARCHAR" property="coinName" />
+    <result column="coin_token" jdbcType="VARCHAR" property="coinToken" />
+    <result column="change_mode" jdbcType="INTEGER" property="changeMode" />
+    <result column="in_or_out" jdbcType="TINYINT" property="inOrOut" />
+    <result column="amount_mode" jdbcType="TINYINT" property="amountMode" />
+    <result column="change_amount" jdbcType="DECIMAL" property="changeAmount" />
+    <result column="src_main_id" jdbcType="BIGINT" property="srcMainId" />
+    <result column="src_slave_id" jdbcType="BIGINT" property="srcSlaveId" />
+    <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
+    <result column="after_total_amount" jdbcType="DECIMAL" property="afterTotalAmount" />
+    <result column="balance_amount" jdbcType="DECIMAL" property="balanceAmount" />
+    <result column="after_balance_amount" jdbcType="DECIMAL" property="afterBalanceAmount" />
+    <result column="frozen_amount" jdbcType="DECIMAL" property="frozenAmount" />
+    <result column="after_frozen_amount" jdbcType="DECIMAL" property="afterFrozenAmount" />
+    <result column="cash_frozen_amount" jdbcType="DECIMAL" property="cashFrozenAmount" />
+    <result column="after_cash_frozen_amount" jdbcType="DECIMAL" property="afterCashFrozenAmount" />
+    <result column="buy_frozen_amount" jdbcType="DECIMAL" property="buyFrozenAmount" />
+    <result column="after_buy_frozen_amount" jdbcType="DECIMAL" property="afterBuyFrozenAmount" />
+    <result column="sell_frozen_amount" jdbcType="DECIMAL" property="sellFrozenAmount" />
+    <result column="after_sell_frozen_amount" jdbcType="DECIMAL" property="afterSellFrozenAmount" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    flow_id, asset_id, user_id, flow_mode, coin_id, coin_name, coin_token, change_mode, 
+    in_or_out, amount_mode, change_amount, src_main_id, src_slave_id, total_amount, after_total_amount, 
+    balance_amount, after_balance_amount, frozen_amount, after_frozen_amount, cash_frozen_amount, 
+    after_cash_frozen_amount, buy_frozen_amount, after_buy_frozen_amount, sell_frozen_amount, 
+    after_sell_frozen_amount, version, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_asset_amount_flow
+    where flow_id = #{flowId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user_asset_amount_flow
+    where flow_id = #{flowId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sky.ico.service.data.entity.UserAssetAmountFlow">
+    insert into t_user_asset_amount_flow (flow_id, asset_id, user_id, 
+      flow_mode, coin_id, coin_name, 
+      coin_token, change_mode, in_or_out, 
+      amount_mode, change_amount, src_main_id, 
+      src_slave_id, total_amount, after_total_amount, 
+      balance_amount, after_balance_amount, frozen_amount, 
+      after_frozen_amount, cash_frozen_amount, after_cash_frozen_amount, 
+      buy_frozen_amount, after_buy_frozen_amount, 
+      sell_frozen_amount, after_sell_frozen_amount, 
+      version, create_time, update_time
+      )
+    values (#{flowId,jdbcType=BIGINT}, #{assetId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{flowMode,jdbcType=TINYINT}, #{coinId,jdbcType=BIGINT}, #{coinName,jdbcType=VARCHAR}, 
+      #{coinToken,jdbcType=VARCHAR}, #{changeMode,jdbcType=INTEGER}, #{inOrOut,jdbcType=TINYINT}, 
+      #{amountMode,jdbcType=TINYINT}, #{changeAmount,jdbcType=DECIMAL}, #{srcMainId,jdbcType=BIGINT}, 
+      #{srcSlaveId,jdbcType=BIGINT}, #{totalAmount,jdbcType=DECIMAL}, #{afterTotalAmount,jdbcType=DECIMAL}, 
+      #{balanceAmount,jdbcType=DECIMAL}, #{afterBalanceAmount,jdbcType=DECIMAL}, #{frozenAmount,jdbcType=DECIMAL}, 
+      #{afterFrozenAmount,jdbcType=DECIMAL}, #{cashFrozenAmount,jdbcType=DECIMAL}, #{afterCashFrozenAmount,jdbcType=DECIMAL}, 
+      #{buyFrozenAmount,jdbcType=DECIMAL}, #{afterBuyFrozenAmount,jdbcType=DECIMAL}, 
+      #{sellFrozenAmount,jdbcType=DECIMAL}, #{afterSellFrozenAmount,jdbcType=DECIMAL}, 
+      #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.ico.service.data.entity.UserAssetAmountFlow">
+    insert into t_user_asset_amount_flow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="flowId != null">
+        flow_id,
+      </if>
+      <if test="assetId != null">
+        asset_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="flowMode != null">
+        flow_mode,
+      </if>
+      <if test="coinId != null">
+        coin_id,
+      </if>
+      <if test="coinName != null">
+        coin_name,
+      </if>
+      <if test="coinToken != null">
+        coin_token,
+      </if>
+      <if test="changeMode != null">
+        change_mode,
+      </if>
+      <if test="inOrOut != null">
+        in_or_out,
+      </if>
+      <if test="amountMode != null">
+        amount_mode,
+      </if>
+      <if test="changeAmount != null">
+        change_amount,
+      </if>
+      <if test="srcMainId != null">
+        src_main_id,
+      </if>
+      <if test="srcSlaveId != null">
+        src_slave_id,
+      </if>
+      <if test="totalAmount != null">
+        total_amount,
+      </if>
+      <if test="afterTotalAmount != null">
+        after_total_amount,
+      </if>
+      <if test="balanceAmount != null">
+        balance_amount,
+      </if>
+      <if test="afterBalanceAmount != null">
+        after_balance_amount,
+      </if>
+      <if test="frozenAmount != null">
+        frozen_amount,
+      </if>
+      <if test="afterFrozenAmount != null">
+        after_frozen_amount,
+      </if>
+      <if test="cashFrozenAmount != null">
+        cash_frozen_amount,
+      </if>
+      <if test="afterCashFrozenAmount != null">
+        after_cash_frozen_amount,
+      </if>
+      <if test="buyFrozenAmount != null">
+        buy_frozen_amount,
+      </if>
+      <if test="afterBuyFrozenAmount != null">
+        after_buy_frozen_amount,
+      </if>
+      <if test="sellFrozenAmount != null">
+        sell_frozen_amount,
+      </if>
+      <if test="afterSellFrozenAmount != null">
+        after_sell_frozen_amount,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="flowId != null">
+        #{flowId,jdbcType=BIGINT},
+      </if>
+      <if test="assetId != null">
+        #{assetId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="flowMode != null">
+        #{flowMode,jdbcType=TINYINT},
+      </if>
+      <if test="coinId != null">
+        #{coinId,jdbcType=BIGINT},
+      </if>
+      <if test="coinName != null">
+        #{coinName,jdbcType=VARCHAR},
+      </if>
+      <if test="coinToken != null">
+        #{coinToken,jdbcType=VARCHAR},
+      </if>
+      <if test="changeMode != null">
+        #{changeMode,jdbcType=INTEGER},
+      </if>
+      <if test="inOrOut != null">
+        #{inOrOut,jdbcType=TINYINT},
+      </if>
+      <if test="amountMode != null">
+        #{amountMode,jdbcType=TINYINT},
+      </if>
+      <if test="changeAmount != null">
+        #{changeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="srcMainId != null">
+        #{srcMainId,jdbcType=BIGINT},
+      </if>
+      <if test="srcSlaveId != null">
+        #{srcSlaveId,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null">
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterTotalAmount != null">
+        #{afterTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null">
+        #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterBalanceAmount != null">
+        #{afterBalanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenAmount != null">
+        #{frozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterFrozenAmount != null">
+        #{afterFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashFrozenAmount != null">
+        #{cashFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterCashFrozenAmount != null">
+        #{afterCashFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="buyFrozenAmount != null">
+        #{buyFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterBuyFrozenAmount != null">
+        #{afterBuyFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellFrozenAmount != null">
+        #{sellFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterSellFrozenAmount != null">
+        #{afterSellFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.ico.service.data.entity.UserAssetAmountFlow">
+    update t_user_asset_amount_flow
+    <set>
+      <if test="assetId != null">
+        asset_id = #{assetId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="flowMode != null">
+        flow_mode = #{flowMode,jdbcType=TINYINT},
+      </if>
+      <if test="coinId != null">
+        coin_id = #{coinId,jdbcType=BIGINT},
+      </if>
+      <if test="coinName != null">
+        coin_name = #{coinName,jdbcType=VARCHAR},
+      </if>
+      <if test="coinToken != null">
+        coin_token = #{coinToken,jdbcType=VARCHAR},
+      </if>
+      <if test="changeMode != null">
+        change_mode = #{changeMode,jdbcType=INTEGER},
+      </if>
+      <if test="inOrOut != null">
+        in_or_out = #{inOrOut,jdbcType=TINYINT},
+      </if>
+      <if test="amountMode != null">
+        amount_mode = #{amountMode,jdbcType=TINYINT},
+      </if>
+      <if test="changeAmount != null">
+        change_amount = #{changeAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="srcMainId != null">
+        src_main_id = #{srcMainId,jdbcType=BIGINT},
+      </if>
+      <if test="srcSlaveId != null">
+        src_slave_id = #{srcSlaveId,jdbcType=BIGINT},
+      </if>
+      <if test="totalAmount != null">
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterTotalAmount != null">
+        after_total_amount = #{afterTotalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="balanceAmount != null">
+        balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterBalanceAmount != null">
+        after_balance_amount = #{afterBalanceAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="frozenAmount != null">
+        frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterFrozenAmount != null">
+        after_frozen_amount = #{afterFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="cashFrozenAmount != null">
+        cash_frozen_amount = #{cashFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterCashFrozenAmount != null">
+        after_cash_frozen_amount = #{afterCashFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="buyFrozenAmount != null">
+        buy_frozen_amount = #{buyFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterBuyFrozenAmount != null">
+        after_buy_frozen_amount = #{afterBuyFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="sellFrozenAmount != null">
+        sell_frozen_amount = #{sellFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="afterSellFrozenAmount != null">
+        after_sell_frozen_amount = #{afterSellFrozenAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where flow_id = #{flowId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.ico.service.data.entity.UserAssetAmountFlow">
+    update t_user_asset_amount_flow
+    set asset_id = #{assetId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      flow_mode = #{flowMode,jdbcType=TINYINT},
+      coin_id = #{coinId,jdbcType=BIGINT},
+      coin_name = #{coinName,jdbcType=VARCHAR},
+      coin_token = #{coinToken,jdbcType=VARCHAR},
+      change_mode = #{changeMode,jdbcType=INTEGER},
+      in_or_out = #{inOrOut,jdbcType=TINYINT},
+      amount_mode = #{amountMode,jdbcType=TINYINT},
+      change_amount = #{changeAmount,jdbcType=DECIMAL},
+      src_main_id = #{srcMainId,jdbcType=BIGINT},
+      src_slave_id = #{srcSlaveId,jdbcType=BIGINT},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      after_total_amount = #{afterTotalAmount,jdbcType=DECIMAL},
+      balance_amount = #{balanceAmount,jdbcType=DECIMAL},
+      after_balance_amount = #{afterBalanceAmount,jdbcType=DECIMAL},
+      frozen_amount = #{frozenAmount,jdbcType=DECIMAL},
+      after_frozen_amount = #{afterFrozenAmount,jdbcType=DECIMAL},
+      cash_frozen_amount = #{cashFrozenAmount,jdbcType=DECIMAL},
+      after_cash_frozen_amount = #{afterCashFrozenAmount,jdbcType=DECIMAL},
+      buy_frozen_amount = #{buyFrozenAmount,jdbcType=DECIMAL},
+      after_buy_frozen_amount = #{afterBuyFrozenAmount,jdbcType=DECIMAL},
+      sell_frozen_amount = #{sellFrozenAmount,jdbcType=DECIMAL},
+      after_sell_frozen_amount = #{afterSellFrozenAmount,jdbcType=DECIMAL},
+      version = #{version,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where flow_id = #{flowId,jdbcType=BIGINT}
+  </update>
+</mapper>

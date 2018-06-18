@@ -52,7 +52,6 @@ create table `t_coin` (
 	`main_coin_id` bigint unsigned not null comment '对应主币id',
 	`main_coin_name` varchar(16) not null comment '对应主币名称',
 	`coin_statu` tinyint unsigned not null comment '币状态',
-	`version` int unsigned not null default '0' comment '版本号',
 	`is_cash` tinyint unsigned not null comment '是否可提现:0不可以; 1可以',
 	`is_recharge` tinyint unsigned not null comment '是否可充值:0不可以; 1可以',
 	`is_trade` tinyint unsigned not null comment '是否可交易:0不可以; 1可以',

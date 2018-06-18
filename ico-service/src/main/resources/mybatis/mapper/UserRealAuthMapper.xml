@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.ico.service.data.dao.UserRealAuthMapper">
+  <resultMap id="BaseResultMap" type="com.sky.ico.service.data.entity.UserRealAuth">
+    <id column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="auth_level" jdbcType="TINYINT" property="authLevel" />
+    <result column="card_mode" jdbcType="TINYINT" property="cardMode" />
+    <result column="card_no" jdbcType="VARCHAR" property="cardNo" />
+    <result column="area_mode" jdbcType="INTEGER" property="areaMode" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="card_image_a" jdbcType="VARCHAR" property="cardImageA" />
+    <result column="card_image_b" jdbcType="VARCHAR" property="cardImageB" />
+    <result column="card_image_hand_a" jdbcType="VARCHAR" property="cardImageHandA" />
+    <result column="card_image_hand_b" jdbcType="VARCHAR" property="cardImageHandB" />
+    <result column="card_auth_statu" jdbcType="TINYINT" property="cardAuthStatu" />
+    <result column="card_auth_time" jdbcType="TIMESTAMP" property="cardAuthTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, auth_level, card_mode, card_no, area_mode, area_name, real_name, card_image_a, 
+    card_image_b, card_image_hand_a, card_image_hand_b, card_auth_statu, card_auth_time, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_real_auth
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_user_real_auth
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sky.ico.service.data.entity.UserRealAuth">
+    insert into t_user_real_auth (user_id, auth_level, card_mode, 
+      card_no, area_mode, area_name, 
+      real_name, card_image_a, card_image_b, 
+      card_image_hand_a, card_image_hand_b, card_auth_statu, 
+      card_auth_time, create_time, update_time
+      )
+    values (#{userId,jdbcType=BIGINT}, #{authLevel,jdbcType=TINYINT}, #{cardMode,jdbcType=TINYINT}, 
+      #{cardNo,jdbcType=VARCHAR}, #{areaMode,jdbcType=INTEGER}, #{areaName,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{cardImageA,jdbcType=VARCHAR}, #{cardImageB,jdbcType=VARCHAR}, 
+      #{cardImageHandA,jdbcType=VARCHAR}, #{cardImageHandB,jdbcType=VARCHAR}, #{cardAuthStatu,jdbcType=TINYINT}, 
+      #{cardAuthTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.ico.service.data.entity.UserRealAuth">
+    insert into t_user_real_auth
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="authLevel != null">
+        auth_level,
+      </if>
+      <if test="cardMode != null">
+        card_mode,
+      </if>
+      <if test="cardNo != null">
+        card_no,
+      </if>
+      <if test="areaMode != null">
+        area_mode,
+      </if>
+      <if test="areaName != null">
+        area_name,
+      </if>
+      <if test="realName != null">
+        real_name,
+      </if>
+      <if test="cardImageA != null">
+        card_image_a,
+      </if>
+      <if test="cardImageB != null">
+        card_image_b,
+      </if>
+      <if test="cardImageHandA != null">
+        card_image_hand_a,
+      </if>
+      <if test="cardImageHandB != null">
+        card_image_hand_b,
+      </if>
+      <if test="cardAuthStatu != null">
+        card_auth_statu,
+      </if>
+      <if test="cardAuthTime != null">
+        card_auth_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="authLevel != null">
+        #{authLevel,jdbcType=TINYINT},
+      </if>
+      <if test="cardMode != null">
+        #{cardMode,jdbcType=TINYINT},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="areaMode != null">
+        #{areaMode,jdbcType=INTEGER},
+      </if>
+      <if test="areaName != null">
+        #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageA != null">
+        #{cardImageA,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageB != null">
+        #{cardImageB,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageHandA != null">
+        #{cardImageHandA,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageHandB != null">
+        #{cardImageHandB,jdbcType=VARCHAR},
+      </if>
+      <if test="cardAuthStatu != null">
+        #{cardAuthStatu,jdbcType=TINYINT},
+      </if>
+      <if test="cardAuthTime != null">
+        #{cardAuthTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.ico.service.data.entity.UserRealAuth">
+    update t_user_real_auth
+    <set>
+      <if test="authLevel != null">
+        auth_level = #{authLevel,jdbcType=TINYINT},
+      </if>
+      <if test="cardMode != null">
+        card_mode = #{cardMode,jdbcType=TINYINT},
+      </if>
+      <if test="cardNo != null">
+        card_no = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="areaMode != null">
+        area_mode = #{areaMode,jdbcType=INTEGER},
+      </if>
+      <if test="areaName != null">
+        area_name = #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null">
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageA != null">
+        card_image_a = #{cardImageA,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageB != null">
+        card_image_b = #{cardImageB,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageHandA != null">
+        card_image_hand_a = #{cardImageHandA,jdbcType=VARCHAR},
+      </if>
+      <if test="cardImageHandB != null">
+        card_image_hand_b = #{cardImageHandB,jdbcType=VARCHAR},
+      </if>
+      <if test="cardAuthStatu != null">
+        card_auth_statu = #{cardAuthStatu,jdbcType=TINYINT},
+      </if>
+      <if test="cardAuthTime != null">
+        card_auth_time = #{cardAuthTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.ico.service.data.entity.UserRealAuth">
+    update t_user_real_auth
+    set auth_level = #{authLevel,jdbcType=TINYINT},
+      card_mode = #{cardMode,jdbcType=TINYINT},
+      card_no = #{cardNo,jdbcType=VARCHAR},
+      area_mode = #{areaMode,jdbcType=INTEGER},
+      area_name = #{areaName,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      card_image_a = #{cardImageA,jdbcType=VARCHAR},
+      card_image_b = #{cardImageB,jdbcType=VARCHAR},
+      card_image_hand_a = #{cardImageHandA,jdbcType=VARCHAR},
+      card_image_hand_b = #{cardImageHandB,jdbcType=VARCHAR},
+      card_auth_statu = #{cardAuthStatu,jdbcType=TINYINT},
+      card_auth_time = #{cardAuthTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>

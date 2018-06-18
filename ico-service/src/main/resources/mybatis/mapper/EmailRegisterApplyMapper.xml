@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.ico.service.data.dao.EmailRegisterApplyMapper">
+  <resultMap id="BaseResultMap" type="com.sky.ico.service.data.entity.EmailRegisterApply">
+    <id column="request_ref_no" jdbcType="VARCHAR" property="requestRefNo" />
+    <result column="apply_id" jdbcType="BIGINT" property="applyId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="trade_pwd" jdbcType="VARCHAR" property="tradePwd" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="email_verification_code" jdbcType="VARCHAR" property="emailVerificationCode" />
+    <result column="register_status" jdbcType="TINYINT" property="registerStatus" />
+    <result column="result" jdbcType="TINYINT" property="result" />
+    <result column="fail_code" jdbcType="VARCHAR" property="failCode" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="register_time" jdbcType="TIMESTAMP" property="registerTime" />
+    <result column="register_ip" jdbcType="VARCHAR" property="registerIp" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    request_ref_no, apply_id, user_id, user_pwd, trade_pwd, email, email_verification_code, 
+    register_status, result, fail_code, fail_reason, register_time, register_ip, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_email_register_apply
+    where request_ref_no = #{requestRefNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_email_register_apply
+    where request_ref_no = #{requestRefNo,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sky.ico.service.data.entity.EmailRegisterApply">
+    insert into t_email_register_apply (request_ref_no, apply_id, user_id, 
+      user_pwd, trade_pwd, email, 
+      email_verification_code, register_status, 
+      result, fail_code, fail_reason, 
+      register_time, register_ip, create_time, 
+      update_time)
+    values (#{requestRefNo,jdbcType=VARCHAR}, #{applyId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{userPwd,jdbcType=VARCHAR}, #{tradePwd,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{emailVerificationCode,jdbcType=VARCHAR}, #{registerStatus,jdbcType=TINYINT}, 
+      #{result,jdbcType=TINYINT}, #{failCode,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, 
+      #{registerTime,jdbcType=TIMESTAMP}, #{registerIp,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.ico.service.data.entity.EmailRegisterApply">
+    insert into t_email_register_apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="requestRefNo != null">
+        request_ref_no,
+      </if>
+      <if test="applyId != null">
+        apply_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="tradePwd != null">
+        trade_pwd,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="emailVerificationCode != null">
+        email_verification_code,
+      </if>
+      <if test="registerStatus != null">
+        register_status,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="failCode != null">
+        fail_code,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="registerTime != null">
+        register_time,
+      </if>
+      <if test="registerIp != null">
+        register_ip,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="requestRefNo != null">
+        #{requestRefNo,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null">
+        #{applyId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePwd != null">
+        #{tradePwd,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailVerificationCode != null">
+        #{emailVerificationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerStatus != null">
+        #{registerStatus,jdbcType=TINYINT},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=TINYINT},
+      </if>
+      <if test="failCode != null">
+        #{failCode,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerIp != null">
+        #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.ico.service.data.entity.EmailRegisterApply">
+    update t_email_register_apply
+    <set>
+      <if test="applyId != null">
+        apply_id = #{applyId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="tradePwd != null">
+        trade_pwd = #{tradePwd,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="emailVerificationCode != null">
+        email_verification_code = #{emailVerificationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="registerStatus != null">
+        register_status = #{registerStatus,jdbcType=TINYINT},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=TINYINT},
+      </if>
+      <if test="failCode != null">
+        fail_code = #{failCode,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        fail_reason = #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="registerTime != null">
+        register_time = #{registerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerIp != null">
+        register_ip = #{registerIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where request_ref_no = #{requestRefNo,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.ico.service.data.entity.EmailRegisterApply">
+    update t_email_register_apply
+    set apply_id = #{applyId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      trade_pwd = #{tradePwd,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      email_verification_code = #{emailVerificationCode,jdbcType=VARCHAR},
+      register_status = #{registerStatus,jdbcType=TINYINT},
+      result = #{result,jdbcType=TINYINT},
+      fail_code = #{failCode,jdbcType=VARCHAR},
+      fail_reason = #{failReason,jdbcType=VARCHAR},
+      register_time = #{registerTime,jdbcType=TIMESTAMP},
+      register_ip = #{registerIp,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where request_ref_no = #{requestRefNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

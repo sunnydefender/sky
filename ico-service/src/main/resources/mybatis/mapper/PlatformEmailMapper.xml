@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.ico.service.data.dao.PlatformEmailMapper">
+  <resultMap id="BaseResultMap" type="com.sky.ico.service.data.entity.PlatformEmail">
+    <id column="email_id" jdbcType="BIGINT" property="emailId" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="smtp_host" jdbcType="VARCHAR" property="smtpHost" />
+    <result column="smtp_port" jdbcType="INTEGER" property="smtpPort" />
+    <result column="email_mode" jdbcType="TINYINT" property="emailMode" />
+    <result column="email_function" jdbcType="TINYINT" property="emailFunction" />
+    <result column="email_group" jdbcType="VARCHAR" property="emailGroup" />
+    <result column="email_status" jdbcType="TINYINT" property="emailStatus" />
+    <result column="send_interval_seconds" jdbcType="INTEGER" property="sendIntervalSeconds" />
+    <result column="success_times" jdbcType="INTEGER" property="successTimes" />
+    <result column="fail_times" jdbcType="INTEGER" property="failTimes" />
+    <result column="timeout_times" jdbcType="INTEGER" property="timeoutTimes" />
+    <result column="freeze_continuous_failure_times" jdbcType="INTEGER" property="freezeContinuousFailureTimes" />
+    <result column="freeze_last_1min_failure_times" jdbcType="INTEGER" property="freezeLast1minFailureTimes" />
+    <result column="freeze_times" jdbcType="INTEGER" property="freezeTimes" />
+    <result column="freeze_start_time" jdbcType="TIMESTAMP" property="freezeStartTime" />
+    <result column="freeze_end_time" jdbcType="TIMESTAMP" property="freezeEndTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    email_id, username, password, smtp_host, smtp_port, email_mode, email_function, email_group, 
+    email_status, send_interval_seconds, success_times, fail_times, timeout_times, freeze_continuous_failure_times, 
+    freeze_last_1min_failure_times, freeze_times, freeze_start_time, freeze_end_time, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_platform_email
+    where email_id = #{emailId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_platform_email
+    where email_id = #{emailId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sky.ico.service.data.entity.PlatformEmail">
+    insert into t_platform_email (email_id, username, password, 
+      smtp_host, smtp_port, email_mode, 
+      email_function, email_group, email_status, 
+      send_interval_seconds, success_times, fail_times, 
+      timeout_times, freeze_continuous_failure_times, 
+      freeze_last_1min_failure_times, freeze_times, 
+      freeze_start_time, freeze_end_time, create_time, 
+      update_time)
+    values (#{emailId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{smtpHost,jdbcType=VARCHAR}, #{smtpPort,jdbcType=INTEGER}, #{emailMode,jdbcType=TINYINT}, 
+      #{emailFunction,jdbcType=TINYINT}, #{emailGroup,jdbcType=VARCHAR}, #{emailStatus,jdbcType=TINYINT}, 
+      #{sendIntervalSeconds,jdbcType=INTEGER}, #{successTimes,jdbcType=INTEGER}, #{failTimes,jdbcType=INTEGER}, 
+      #{timeoutTimes,jdbcType=INTEGER}, #{freezeContinuousFailureTimes,jdbcType=INTEGER}, 
+      #{freezeLast1minFailureTimes,jdbcType=INTEGER}, #{freezeTimes,jdbcType=INTEGER}, 
+      #{freezeStartTime,jdbcType=TIMESTAMP}, #{freezeEndTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.ico.service.data.entity.PlatformEmail">
+    insert into t_platform_email
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="emailId != null">
+        email_id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="smtpHost != null">
+        smtp_host,
+      </if>
+      <if test="smtpPort != null">
+        smtp_port,
+      </if>
+      <if test="emailMode != null">
+        email_mode,
+      </if>
+      <if test="emailFunction != null">
+        email_function,
+      </if>
+      <if test="emailGroup != null">
+        email_group,
+      </if>
+      <if test="emailStatus != null">
+        email_status,
+      </if>
+      <if test="sendIntervalSeconds != null">
+        send_interval_seconds,
+      </if>
+      <if test="successTimes != null">
+        success_times,
+      </if>
+      <if test="failTimes != null">
+        fail_times,
+      </if>
+      <if test="timeoutTimes != null">
+        timeout_times,
+      </if>
+      <if test="freezeContinuousFailureTimes != null">
+        freeze_continuous_failure_times,
+      </if>
+      <if test="freezeLast1minFailureTimes != null">
+        freeze_last_1min_failure_times,
+      </if>
+      <if test="freezeTimes != null">
+        freeze_times,
+      </if>
+      <if test="freezeStartTime != null">
+        freeze_start_time,
+      </if>
+      <if test="freezeEndTime != null">
+        freeze_end_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="emailId != null">
+        #{emailId,jdbcType=BIGINT},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="smtpHost != null">
+        #{smtpHost,jdbcType=VARCHAR},
+      </if>
+      <if test="smtpPort != null">
+        #{smtpPort,jdbcType=INTEGER},
+      </if>
+      <if test="emailMode != null">
+        #{emailMode,jdbcType=TINYINT},
+      </if>
+      <if test="emailFunction != null">
+        #{emailFunction,jdbcType=TINYINT},
+      </if>
+      <if test="emailGroup != null">
+        #{emailGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="emailStatus != null">
+        #{emailStatus,jdbcType=TINYINT},
+      </if>
+      <if test="sendIntervalSeconds != null">
+        #{sendIntervalSeconds,jdbcType=INTEGER},
+      </if>
+      <if test="successTimes != null">
+        #{successTimes,jdbcType=INTEGER},
+      </if>
+      <if test="failTimes != null">
+        #{failTimes,jdbcType=INTEGER},
+      </if>
+      <if test="timeoutTimes != null">
+        #{timeoutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeContinuousFailureTimes != null">
+        #{freezeContinuousFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeLast1minFailureTimes != null">
+        #{freezeLast1minFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeTimes != null">
+        #{freezeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeStartTime != null">
+        #{freezeStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freezeEndTime != null">
+        #{freezeEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.ico.service.data.entity.PlatformEmail">
+    update t_platform_email
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="smtpHost != null">
+        smtp_host = #{smtpHost,jdbcType=VARCHAR},
+      </if>
+      <if test="smtpPort != null">
+        smtp_port = #{smtpPort,jdbcType=INTEGER},
+      </if>
+      <if test="emailMode != null">
+        email_mode = #{emailMode,jdbcType=TINYINT},
+      </if>
+      <if test="emailFunction != null">
+        email_function = #{emailFunction,jdbcType=TINYINT},
+      </if>
+      <if test="emailGroup != null">
+        email_group = #{emailGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="emailStatus != null">
+        email_status = #{emailStatus,jdbcType=TINYINT},
+      </if>
+      <if test="sendIntervalSeconds != null">
+        send_interval_seconds = #{sendIntervalSeconds,jdbcType=INTEGER},
+      </if>
+      <if test="successTimes != null">
+        success_times = #{successTimes,jdbcType=INTEGER},
+      </if>
+      <if test="failTimes != null">
+        fail_times = #{failTimes,jdbcType=INTEGER},
+      </if>
+      <if test="timeoutTimes != null">
+        timeout_times = #{timeoutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeContinuousFailureTimes != null">
+        freeze_continuous_failure_times = #{freezeContinuousFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeLast1minFailureTimes != null">
+        freeze_last_1min_failure_times = #{freezeLast1minFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeTimes != null">
+        freeze_times = #{freezeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeStartTime != null">
+        freeze_start_time = #{freezeStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="freezeEndTime != null">
+        freeze_end_time = #{freezeEndTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where email_id = #{emailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.ico.service.data.entity.PlatformEmail">
+    update t_platform_email
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      smtp_host = #{smtpHost,jdbcType=VARCHAR},
+      smtp_port = #{smtpPort,jdbcType=INTEGER},
+      email_mode = #{emailMode,jdbcType=TINYINT},
+      email_function = #{emailFunction,jdbcType=TINYINT},
+      email_group = #{emailGroup,jdbcType=VARCHAR},
+      email_status = #{emailStatus,jdbcType=TINYINT},
+      send_interval_seconds = #{sendIntervalSeconds,jdbcType=INTEGER},
+      success_times = #{successTimes,jdbcType=INTEGER},
+      fail_times = #{failTimes,jdbcType=INTEGER},
+      timeout_times = #{timeoutTimes,jdbcType=INTEGER},
+      freeze_continuous_failure_times = #{freezeContinuousFailureTimes,jdbcType=INTEGER},
+      freeze_last_1min_failure_times = #{freezeLast1minFailureTimes,jdbcType=INTEGER},
+      freeze_times = #{freezeTimes,jdbcType=INTEGER},
+      freeze_start_time = #{freezeStartTime,jdbcType=TIMESTAMP},
+      freeze_end_time = #{freezeEndTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where email_id = #{emailId,jdbcType=BIGINT}
+  </update>
+</mapper>

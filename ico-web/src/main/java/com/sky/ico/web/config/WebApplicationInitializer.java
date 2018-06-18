@@ -1,4 +1,4 @@
-package com.sky.ico.admin.config;
+package com.sky.ico.web.config;
 
 import javax.servlet.Filter;
 
