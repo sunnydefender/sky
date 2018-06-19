@@ -8,6 +8,7 @@ import com.sky.ico.service.data.entity.*;
 import com.sky.ico.service.data.entity.builder.*;
 import com.sky.ico.service.dto.EmailRegisterParamDTO;
 import com.sky.ico.service.enums.*;
+import com.sky.ico.service.task.CreateUserAssetTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class LocalAuthService {
 
         userService.verifyUserNotExistedByEmail(paramDTO.getEmail());
         emailVerificationCodeService.verify(paramDTO.getEmailVerificationCode(), BusinessMode.REGISTER, paramDTO.getEmail());
+
+        // TODO: 注册频率控制
 
         long applyId = IdUtils.getInstance().createFlowId();
         long userId = IdUtils.getInstance().createUid();
@@ -75,7 +78,7 @@ public class LocalAuthService {
         Task task = new Task();
         task.setTaskKey(String.valueOf(user.getUserId()));
         // TODO:异步创建用户资产记录
-        task.setHandler("");
+        task.setHandler(CreateUserAssetTask.class.getSimpleName());
         taskManager.pushTask(task);
     }
 }
