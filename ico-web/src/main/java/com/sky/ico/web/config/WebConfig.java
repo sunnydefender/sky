@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = "com.sky.ico.admin")
+@ComponentScan(basePackages = "com.sky.ico.web")
 public class WebConfig extends WebMvcConfigurerAdapter {
 	
 	/**

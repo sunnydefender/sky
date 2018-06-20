@@ -1,8 +1,9 @@
 package com.sky.ico.web.controller;
 
 import com.sky.framework.common.dto.base.BaseResultDTO;
-import com.sky.framework.common.exception.ErrorCode;
 import com.sky.ico.service.dto.EmailRegisterParamDTO;
+import com.sky.ico.service.dto.EmailVerificationCodeParamDTO;
+import com.sky.ico.service.service.EmailVerificationCodeService;
 import com.sky.ico.service.service.LocalAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,16 +21,17 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by sunnydefender on 2018/4/24.
  */
 @RestController
-@RequestMapping(value = "/local/auth")
-public class LocalAuthController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LocalAuthController.class);
+@RequestMapping(value = "/email")
+public class EmailController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailController.class);
 
     @Autowired
-    private LocalAuthService localAuthService;
+    private EmailVerificationCodeService emailVerificationCodeService;
 
-    @RequestMapping(value = "/email/register", method = POST)
+    @RequestMapping(value = "/verification-code/send", method = POST)
     @ResponseBody
-    public BaseResultDTO emailRegister(HttpServletRequest request, @RequestBody EmailRegisterParamDTO paramDTO) {
-        return localAuthService.emailRegister(request, paramDTO);
+    public BaseResultDTO sendVerificationCode(HttpServletRequest request, @RequestBody EmailVerificationCodeParamDTO paramDTO) {
+        emailVerificationCodeService.sendVerificationCode(request ,paramDTO);
+        return BaseResultDTO.success();
     }
 }

@@ -13,6 +13,7 @@
         <module>ico-web</module>
         <module>ico-admin</module>
         <module>ico-service</module>
+        <module>ico-resources</module>
     </modules>
 
     <properties>

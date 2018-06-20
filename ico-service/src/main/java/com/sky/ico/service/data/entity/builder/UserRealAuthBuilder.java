@@ -3,6 +3,7 @@ package com.sky.ico.service.data.entity.builder;
 import com.sky.ico.service.data.entity.EmailRegisterApply;
 import com.sky.ico.service.data.entity.User;
 import com.sky.ico.service.data.entity.UserRealAuth;
+import com.sky.ico.service.enums.CardAuthStatus;
 
 import java.util.Date;
 
@@ -19,8 +20,9 @@ public class UserRealAuthBuilder {
         entity.setCardImageB(null);
         entity.setCardImageHandA(null);
         entity.setCardImageHandB(null);
-        entity.setCardAuthStatu(null);
+        entity.setCardAuthStatu(CardAuthStatus.NOT_AUTH.getValue());
         entity.setCardAuthTime(null);
+
         Date current = new Date();
         entity.setCreateTime(current);
         entity.setUpdateTime(current);

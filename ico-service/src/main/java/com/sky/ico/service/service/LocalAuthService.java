@@ -2,6 +2,7 @@ package com.sky.ico.service.service;
 
 import com.sky.framework.common.dto.base.BaseResultDTO;
 import com.sky.framework.common.id.IdUtils;
+import com.sky.framework.common.utils.NetworkUtil;
 import com.sky.framework.task.Task;
 import com.sky.framework.task.TaskManager;
 import com.sky.ico.service.data.entity.*;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 
@@ -33,40 +35,27 @@ public class LocalAuthService {
     @Autowired
     private TaskManager taskManager;
 
-    public BaseResultDTO emailRegister(EmailRegisterParamDTO paramDTO) {
+    public BaseResultDTO emailRegister(HttpServletRequest request, EmailRegisterParamDTO paramDTO) {
         Date current = new Date();
 
         userService.verifyUserNotExistedByEmail(paramDTO.getEmail());
         emailVerificationCodeService.verify(paramDTO.getEmailVerificationCode(), BusinessMode.REGISTER, paramDTO.getEmail());
 
+        String registerIp = NetworkUtil.getIp(request);
         // TODO: 注册频率控制
 
         long applyId = IdUtils.getInstance().createFlowId();
-        long userId = IdUtils.getInstance().createUid();
+        long userId = IdUtils.getInstance().createPrimaryKeyId();
         String userPwd = paramDTO.getUserPwd();
         String tradePwd = userPwd;
-        String registerIp = "";
 
-        EmailRegisterApply emailRegisterApply = EmailRegisterApplyBuilder.build(paramDTO);
-        emailRegisterApply.setApplyId(applyId);
-        emailRegisterApply.setUserId(userId);
-        emailRegisterApply.setUserPwd(userPwd);
-        emailRegisterApply.setTradePwd(tradePwd);
-        emailRegisterApply.setRegisterTime(current);
-        emailRegisterApply.setRegisterIp(registerIp);
+        EmailRegisterApply emailRegisterApply = EmailRegisterApplyBuilder.build(paramDTO, applyId, userId, userPwd, tradePwd, current, registerIp);
 
         UserLocalAuth userLocalAuth = UserLocalAuthBuilder.build(emailRegisterApply);
 
-        User user = UserBuilder.build(emailRegisterApply);
-        user.setUserMode(UserMode.NORMAL.getValue());
-        user.setAuthLevel(AuthLevel.NOT_AUTH.getValue());
-        user.setEmailStatus(EmailStatus.USED.getValue());
-        user.setEmailActiveTime(current);
-        user.setMobileStatus(MobileStatus.NOT_USED.getValue());
-        user.setUserStatus(UserStatus.USED.getValue());
+        User user = UserBuilder.build(emailRegisterApply, current);
 
         UserRealAuth userRealAuth = UserRealAuthBuilder.build(user);
-        userRealAuth.setCardAuthStatu(CardAuthStatus.NOT_AUTH.getValue());
 
         mysqlIndependentService.createUser(emailRegisterApply, userLocalAuth, user, userRealAuth);
 

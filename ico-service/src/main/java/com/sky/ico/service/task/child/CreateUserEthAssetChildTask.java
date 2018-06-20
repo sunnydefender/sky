@@ -2,7 +2,6 @@ package com.sky.ico.service.task.child;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sky.framework.common.id.IdUtils;
-import com.sky.framework.task.Task;
 import com.sky.framework.task.childtask.ChildTaskContent;
 import com.sky.framework.task.childtask.IChildTaskHandler;
 import com.sky.framework.task.entity.TaskPO;
@@ -32,9 +31,8 @@ public class CreateUserEthAssetChildTask implements IChildTaskHandler {
         User user = (User) content.get(CreateUserAssetTask.ContentId.USER.name());
 
         JSONObject address = createEthAddress();
-        long assetId = IdUtils.getInstance().createUid();
+        long assetId = IdUtils.getInstance().createPrimaryKeyId();
         UserAsset userAsset = UserAssetBuilder.build(user, assetId);
-        // TODO:
         userAssetMapper.insert(userAsset);
         return TaskExecuteResult.success(CreateUserAssetTask.ChildProgress.CREATED_BTC_ASSET.getValue());
     }

@@ -9,8 +9,8 @@ public class UserLocalAuthBuilder {
     public static UserLocalAuth build(EmailRegisterApply apply) {
         UserLocalAuth entity = new UserLocalAuth();
         entity.setUserId(apply.getUserId());
-        entity.setUserPwd(entity.getUserPwd());
-        entity.setTradePwd(entity.getTradePwd());
+        entity.setUserPwd(apply.getUserPwd());
+        entity.setTradePwd(apply.getTradePwd());
         entity.setEmail(apply.getEmail());
         entity.setMobile(null);
         entity.setRegisterTime(apply.getRegisterTime());
