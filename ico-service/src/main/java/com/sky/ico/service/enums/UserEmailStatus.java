@@ -2,7 +2,7 @@ package com.sky.ico.service.enums;
 
 import com.sky.framework.common.mybatis.IntegerValuedEnum;
 
-public enum EmailStatus implements IntegerValuedEnum {
+public enum UserEmailStatus implements IntegerValuedEnum {
     /** 未启用 */
     NOT_USED(0),
 
@@ -12,7 +12,7 @@ public enum EmailStatus implements IntegerValuedEnum {
 
     private int value;
 
-    private EmailStatus(int value) {
+    private UserEmailStatus(int value) {
         this.value = value;
     }
 

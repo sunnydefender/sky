@@ -36,6 +36,11 @@
             <artifactId>commons-lang3</artifactId>
             <version>${version.common-lang}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-email</artifactId>
+            <version>1.4</version>
+        </dependency>
 
         <!--skyico模块-->
         <dependency>

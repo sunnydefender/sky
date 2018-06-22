@@ -13,7 +13,7 @@ public class UserBuilder {
         entity.setUserMode(UserMode.NORMAL.getValue());
         entity.setAuthLevel(AuthLevel.NOT_AUTH.getValue());
         entity.setEmail(apply.getEmail());
-        entity.setEmailStatus(EmailStatus.USED.getValue());
+        entity.setEmailStatus(UserEmailStatus.USED.getValue());
         entity.setEmailActiveTime(activeTime);
         entity.setMobile(null);
         entity.setMobileStatus(MobileStatus.NOT_USED.getValue());

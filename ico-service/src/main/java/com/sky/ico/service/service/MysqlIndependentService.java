@@ -22,6 +22,9 @@ public class MysqlIndependentService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private PlatformEmailSendMapper platformEmailSendMapper;
+
     public void createUser(EmailRegisterApply emailRegisterApply,
                       UserLocalAuth userLocalAuth,
                       User user,
@@ -31,5 +34,9 @@ public class MysqlIndependentService {
         userLocalAuthMapper.insert(userLocalAuth);
         userMapper.insert(user);
         userRealAuthMapper.insert(userRealAuth);
+    }
+
+    public void insertPlatformEmailSend(PlatformEmailSend platformEmailSend) {
+        platformEmailSendMapper.insert(platformEmailSend);
     }
 }

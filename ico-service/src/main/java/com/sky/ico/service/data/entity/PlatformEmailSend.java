@@ -11,6 +11,8 @@ public class PlatformEmailSend {
 
     private String toAddress;
 
+    private String subject;
+
     private String content;
 
     private Integer sendStatus;
@@ -131,5 +133,13 @@ public class PlatformEmailSend {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

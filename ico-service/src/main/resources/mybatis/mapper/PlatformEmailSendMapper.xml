@@ -6,6 +6,7 @@
     <result column="email_id" jdbcType="BIGINT" property="emailId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="to_address" jdbcType="VARCHAR" property="toAddress" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="send_status" jdbcType="TINYINT" property="sendStatus" />
     <result column="result" jdbcType="TINYINT" property="result" />
@@ -17,7 +18,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    send_id, email_id, username, to_address, content, send_status, result, fail_code, 
+    send_id, email_id, username, to_address, subject, content, send_status, result, fail_code, 
     fail_reason, apply_time, finish_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -32,15 +33,15 @@
   </delete>
   <insert id="insert" parameterType="com.sky.ico.service.data.entity.PlatformEmailSend">
     insert into t_platform_email_send (send_id, email_id, username, 
-      to_address, content, send_status, 
-      result, fail_code, fail_reason, 
-      apply_time, finish_time, create_time, 
-      update_time)
+      to_address, subject, content, 
+      send_status, result, fail_code, 
+      fail_reason, apply_time, finish_time, 
+      create_time, update_time)
     values (#{sendId,jdbcType=BIGINT}, #{emailId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, 
-      #{toAddress,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{sendStatus,jdbcType=TINYINT}, 
-      #{result,jdbcType=TINYINT}, #{failCode,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, 
-      #{applyTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{toAddress,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{sendStatus,jdbcType=TINYINT}, #{result,jdbcType=TINYINT}, #{failCode,jdbcType=VARCHAR}, 
+      #{failReason,jdbcType=VARCHAR}, #{applyTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.sky.ico.service.data.entity.PlatformEmailSend">
     insert into t_platform_email_send
@@ -56,6 +57,9 @@
       </if>
       <if test="toAddress != null">
         to_address,
+      </if>
+      <if test="subject != null">
+        subject,
       </if>
       <if test="content != null">
         content,
@@ -98,6 +102,9 @@
       <if test="toAddress != null">
         #{toAddress,jdbcType=VARCHAR},
       </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
@@ -139,6 +146,9 @@
       <if test="toAddress != null">
         to_address = #{toAddress,jdbcType=VARCHAR},
       </if>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
       </if>
@@ -174,6 +184,7 @@
     set email_id = #{emailId,jdbcType=BIGINT},
       username = #{username,jdbcType=VARCHAR},
       to_address = #{toAddress,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
       content = #{content,jdbcType=VARCHAR},
       send_status = #{sendStatus,jdbcType=TINYINT},
       result = #{result,jdbcType=TINYINT},

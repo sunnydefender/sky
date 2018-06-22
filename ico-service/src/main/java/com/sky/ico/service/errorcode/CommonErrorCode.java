@@ -58,4 +58,34 @@ public class CommonErrorCode {
         }
     }
 
+    public enum Email implements ErrorCode {
+        /** 发送错误 */
+        SEND_EMAIL_ERROR("00002000"),
+
+        /** 根据BusinessMode获取平台邮箱错误 */
+        PLATFORM_EMAL_GROUP_FROM_BUSINESS_MODE_ERROR("00002001"),
+
+        /** 平台邮箱不可用 */
+        PLATFORM_EMAL_GROUP_NOT_AVAILABLE("00002002")
+        ;
+
+        private String errorCode;
+
+        private Email(String errorCode) {
+            this.errorCode = errorCode;
+        }
+
+        public String getErrorCode () {
+            return errorCode;
+        }
+
+        public void setErrorCode (String errorCode){
+            this.errorCode = errorCode;
+        }
+
+        @Override
+        public String getFailCode () {
+            return errorCode;
+        }
+    }
 }

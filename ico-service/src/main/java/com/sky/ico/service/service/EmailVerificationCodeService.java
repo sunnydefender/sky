@@ -1,11 +1,19 @@
 package com.sky.ico.service.service;
 
 import com.sky.framework.common.exception.BusinessException;
+import com.sky.framework.common.id.IdUtils;
 import com.sky.framework.redis.RedisData;
+import com.sky.framework.task.Task;
+import com.sky.framework.task.TaskManager;
+import com.sky.ico.service.common.EmailExecuteContext;
 import com.sky.ico.service.constant.RedisConfigKey;
+import com.sky.ico.service.data.entity.PlatformEmail;
+import com.sky.ico.service.data.entity.PlatformEmailSend;
+import com.sky.ico.service.data.entity.builder.PlatformEmailSendBuilder;
 import com.sky.ico.service.dto.EmailVerificationCodeParamDTO;
 import com.sky.ico.service.enums.BusinessMode;
 import com.sky.ico.service.errorcode.CommonErrorCode;
+import com.sky.ico.service.pojo.EmailContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +21,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -25,6 +34,15 @@ public class EmailVerificationCodeService {
 
     @Autowired
     private RedisData redisData;
+
+    @Autowired
+    private MysqlIndependentService mysqlIndependentService;
+
+    @Autowired
+    private TaskManager taskManager;
+
+    @Autowired
+    private EmailService emailService;
 
     private Random random = new Random();
 
@@ -47,6 +65,18 @@ public class EmailVerificationCodeService {
 
         long timeout = getTimeout(paramDTO.getBusinessMode());
         redisTemplate.opsForValue().set(fieldId, pinCode, timeout,TimeUnit.MINUTES);
+
+        PlatformEmail platformEmail = emailService.getPlatformEmail(paramDTO.getBusinessMode());
+        long sendId = IdUtils.getInstance().createFlowId();
+        EmailContent emailContent = BusinessMode.build(paramDTO.getBusinessMode());
+        emailContent.setContent(emailContent.getContent().replace("{code}", pinCode));
+        Date current = new Date();
+        PlatformEmailSend platformEmailSend = PlatformEmailSendBuilder.build(platformEmail, sendId, paramDTO.getBusinessId(), emailContent.getSubject(), emailContent.getContent(), current);
+        mysqlIndependentService.insertPlatformEmailSend(platformEmailSend);
+
+        Task task = Task.build(EmailExecuteContext.buildEmailHandler("EmailSendHandler", platformEmail.getEmailGroup(), platformEmail.getUsername()),
+                String.valueOf(platformEmailSend.getSendId()), 3, 10000);
+        taskManager.pushTask(task);
     }
 
     private String buildFieldId(BusinessMode businessMode, String businessId) {

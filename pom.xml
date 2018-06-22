@@ -14,6 +14,8 @@
         <module>ico-admin</module>
         <module>ico-service</module>
         <module>ico-resources</module>
+        <module>ico-executor</module>
+        <module>ico-common</module>
     </modules>
 
     <properties>

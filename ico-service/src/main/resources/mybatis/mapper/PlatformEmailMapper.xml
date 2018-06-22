@@ -35,6 +35,22 @@
     from t_platform_email
     where email_id = #{emailId,jdbcType=BIGINT}
   </select>
+
+  <select id="selectAvailableListByEmailGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_platform_email
+    where email_group = #{emailGroup,jdbcType=VARCHAR}
+    and email_status = 1
+  </select>
+
+  <select id="selectAllListByEmailGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_platform_email
+    where email_group = #{emailGroup,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_platform_email
     where email_id = #{emailId,jdbcType=BIGINT}
@@ -268,6 +284,27 @@
       freeze_end_time = #{freezeEndTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where email_id = #{emailId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeySelective">
+    update t_platform_email
+    <set>
+      <if test="successTimes != null">
+        success_times = success_times + #{successTimes,jdbcType=INTEGER},
+      </if>
+      <if test="failTimes != null">
+        fail_times = fail_times + #{failTimes,jdbcType=INTEGER},
+      </if>
+      <if test="timeoutTimes != null">
+        timeout_times = timeout_times + #{timeoutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="freezeTimes != null">
+        freeze_times = freeze_times + #{freezeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
     where email_id = #{emailId,jdbcType=BIGINT}
   </update>
 </mapper>
