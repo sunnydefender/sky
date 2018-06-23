@@ -105,6 +105,8 @@ public class EmailExecuteRunnable implements Runnable {
             case RETRY:
                 retryTask(result, taskPO);
                 break;
+            case MOVE:
+                break;
         }
     }
 
@@ -144,6 +146,18 @@ public class EmailExecuteRunnable implements Runnable {
             taskPO.setTaskStatus(TaskStatus.RETRYING.getValue());
             taskManager.retryTask(taskPO);
         }
+    }
+
+    private void moveTask(TaskExecuteResult result, TaskPO taskPO) {
+        taskPO.setProgress(result.getProgress());
+
+        Date current = new Date();
+        TaskPOBuilder.updateLastTime(taskPO, current);
+
+        taskPO.setNextTime(DateUtil.addMiliSeconds(taskPO.getNextTime(), taskPO.getRetryInterval()));
+
+        taskPO.setTaskStatus(TaskStatus.RETRYING.getValue());
+        taskManager.moveTask(taskPO);
     }
 
 }

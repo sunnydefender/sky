@@ -63,10 +63,16 @@ public class CommonErrorCode {
         SEND_EMAIL_ERROR("00002000"),
 
         /** 根据BusinessMode获取平台邮箱错误 */
-        PLATFORM_EMAL_GROUP_FROM_BUSINESS_MODE_ERROR("00002001"),
+        FAIL_GET_PLATFORM_EMAL_BY_BUSINESS_MODE("00002001"),
 
         /** 平台邮箱不可用 */
-        PLATFORM_EMAL_GROUP_NOT_AVAILABLE("00002002")
+        PLATFORM_EMAL_GROUP_NOT_AVAILABLE("00002002"),
+
+        /** 邮件发送次数超过限制数 */
+        OVER_MAX_RETRY_TIMES("00002003"),
+
+        /** 发送超时 */
+        SEND_TIMEOUT("00002004"),
         ;
 
         private String errorCode;

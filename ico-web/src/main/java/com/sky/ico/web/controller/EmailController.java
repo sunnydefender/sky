@@ -1,6 +1,7 @@
 package com.sky.ico.web.controller;
 
 import com.sky.framework.common.dto.base.BaseResultDTO;
+import com.sky.framework.common.utils.NetworkUtil;
 import com.sky.ico.service.dto.EmailRegisterParamDTO;
 import com.sky.ico.service.dto.EmailVerificationCodeParamDTO;
 import com.sky.ico.service.service.EmailVerificationCodeService;
@@ -31,7 +32,7 @@ public class EmailController {
     @RequestMapping(value = "/verification-code/send", method = POST)
     @ResponseBody
     public BaseResultDTO sendVerificationCode(HttpServletRequest request, @RequestBody EmailVerificationCodeParamDTO paramDTO) {
-        emailVerificationCodeService.sendVerificationCode(request ,paramDTO);
+        emailVerificationCodeService.sendVerificationCode(paramDTO);
         return BaseResultDTO.success();
     }
 }

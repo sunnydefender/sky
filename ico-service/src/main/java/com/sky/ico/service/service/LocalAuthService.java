@@ -2,7 +2,6 @@ package com.sky.ico.service.service;
 
 import com.sky.framework.common.dto.base.BaseResultDTO;
 import com.sky.framework.common.id.IdUtils;
-import com.sky.framework.common.utils.NetworkUtil;
 import com.sky.framework.task.Task;
 import com.sky.framework.task.TaskManager;
 import com.sky.ico.service.data.entity.*;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 
@@ -35,13 +33,12 @@ public class LocalAuthService {
     @Autowired
     private TaskManager taskManager;
 
-    public BaseResultDTO emailRegister(HttpServletRequest request, EmailRegisterParamDTO paramDTO) {
+    public BaseResultDTO emailRegister(EmailRegisterParamDTO paramDTO, String registerIp) {
         Date current = new Date();
 
         userService.verifyUserNotExistedByEmail(paramDTO.getEmail());
         emailVerificationCodeService.verify(paramDTO.getEmailVerificationCode(), BusinessMode.REGISTER, paramDTO.getEmail());
 
-        String registerIp = NetworkUtil.getIp(request);
         // TODO: 注册频率控制
 
         long applyId = IdUtils.getInstance().createFlowId();

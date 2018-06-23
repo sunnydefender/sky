@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sky.ico.service.data.dao.PlatformEmailDailyStatsMapper">
+  <resultMap id="BaseResultMap" type="com.sky.ico.service.data.entity.PlatformEmailDailyStats">
+    <id column="stats_id" jdbcType="BIGINT" property="statsId" />
+    <result column="email_id" jdbcType="BIGINT" property="emailId" />
+    <result column="day_date" jdbcType="VARCHAR" property="dayDate" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="day_success_times" jdbcType="INTEGER" property="daySuccessTimes" />
+    <result column="day_fail_times" jdbcType="INTEGER" property="dayFailTimes" />
+    <result column="day_timeout_times" jdbcType="INTEGER" property="dayTimeoutTimes" />
+    <result column="day_freeze_times" jdbcType="INTEGER" property="dayFreezeTimes" />
+    <result column="last_success_time" jdbcType="TIMESTAMP" property="lastSuccessTime" />
+    <result column="last_fail_time" jdbcType="TIMESTAMP" property="lastFailTime" />
+    <result column="last_send_status" jdbcType="TINYINT" property="lastSendStatus" />
+    <result column="continuous_failure_times" jdbcType="INTEGER" property="continuousFailureTimes" />
+    <result column="last_1min_failure_times" jdbcType="INTEGER" property="last1minFailureTimes" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    stats_id, email_id, day_date, username, day_success_times, day_fail_times, day_timeout_times,
+    day_freeze_times, last_success_time, last_fail_time, last_send_status, continuous_failure_times,
+    last_1min_failure_times, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_platform_email_daily_stats
+    where stats_id = #{statsId,jdbcType=BIGINT}
+  </select>
+  <select id="selectByEmailIdAndDayDate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_platform_email_daily_stats
+    where email_id = #{emailId,jdbcType=BIGINT}
+    and day_date = #{dayDate,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_platform_email_daily_stats
+    where stats_id = #{statsId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.sky.ico.service.data.entity.PlatformEmailDailyStats">
+    insert into t_platform_email_daily_stats (stats_id, email_id, day_date,
+    username, day_success_times, day_fail_times,
+    day_timeout_times, day_freeze_times, last_success_time,
+    last_fail_time, last_send_status, continuous_failure_times,
+    last_1min_failure_times, create_time, update_time
+    )
+    values (#{statsId,jdbcType=BIGINT}, #{emailId,jdbcType=BIGINT}, #{dayDate,jdbcType=VARCHAR},
+    #{username,jdbcType=VARCHAR}, #{daySuccessTimes,jdbcType=INTEGER}, #{dayFailTimes,jdbcType=INTEGER},
+    #{dayTimeoutTimes,jdbcType=INTEGER}, #{dayFreezeTimes,jdbcType=INTEGER}, #{lastSuccessTime,jdbcType=TIMESTAMP},
+    #{lastFailTime,jdbcType=TIMESTAMP}, #{lastSendStatus,jdbcType=TINYINT}, #{continuousFailureTimes,jdbcType=INTEGER},
+    #{last1minFailureTimes,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sky.ico.service.data.entity.PlatformEmailDailyStats">
+    insert into t_platform_email_daily_stats
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="statsId != null">
+        stats_id,
+      </if>
+      <if test="emailId != null">
+        email_id,
+      </if>
+      <if test="dayDate != null">
+        day_date,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="daySuccessTimes != null">
+        day_success_times,
+      </if>
+      <if test="dayFailTimes != null">
+        day_fail_times,
+      </if>
+      <if test="dayTimeoutTimes != null">
+        day_timeout_times,
+      </if>
+      <if test="dayFreezeTimes != null">
+        day_freeze_times,
+      </if>
+      <if test="lastSuccessTime != null">
+        last_success_time,
+      </if>
+      <if test="lastFailTime != null">
+        last_fail_time,
+      </if>
+      <if test="lastSendStatus != null">
+        last_send_status,
+      </if>
+      <if test="continuousFailureTimes != null">
+        continuous_failure_times,
+      </if>
+      <if test="last1minFailureTimes != null">
+        last_1min_failure_times,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="statsId != null">
+        #{statsId,jdbcType=BIGINT},
+      </if>
+      <if test="emailId != null">
+        #{emailId,jdbcType=BIGINT},
+      </if>
+      <if test="dayDate != null">
+        #{dayDate,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="daySuccessTimes != null">
+        #{daySuccessTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayFailTimes != null">
+        #{dayFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayTimeoutTimes != null">
+        #{dayTimeoutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayFreezeTimes != null">
+        #{dayFreezeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="lastSuccessTime != null">
+        #{lastSuccessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastFailTime != null">
+        #{lastFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastSendStatus != null">
+        #{lastSendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="continuousFailureTimes != null">
+        #{continuousFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="last1minFailureTimes != null">
+        #{last1minFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sky.ico.service.data.entity.PlatformEmailDailyStats">
+    update t_platform_email_daily_stats
+    <set>
+      <if test="emailId != null">
+        email_id = #{emailId,jdbcType=BIGINT},
+      </if>
+      <if test="dayDate != null">
+        day_date = #{dayDate,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="daySuccessTimes != null">
+        day_success_times = #{daySuccessTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayFailTimes != null">
+        day_fail_times = #{dayFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayTimeoutTimes != null">
+        day_timeout_times = #{dayTimeoutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayFreezeTimes != null">
+        day_freeze_times = #{dayFreezeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="lastSuccessTime != null">
+        last_success_time = #{lastSuccessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastFailTime != null">
+        last_fail_time = #{lastFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastSendStatus != null">
+        last_send_status = #{lastSendStatus,jdbcType=TINYINT},
+      </if>
+      <if test="continuousFailureTimes != null">
+        continuous_failure_times = #{continuousFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="last1minFailureTimes != null">
+        last_1min_failure_times = #{last1minFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where stats_id = #{statsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sky.ico.service.data.entity.PlatformEmailDailyStats">
+    update t_platform_email_daily_stats
+    set email_id = #{emailId,jdbcType=BIGINT},
+    day_date = #{dayDate,jdbcType=VARCHAR},
+    username = #{username,jdbcType=VARCHAR},
+    day_success_times = #{daySuccessTimes,jdbcType=INTEGER},
+    day_fail_times = #{dayFailTimes,jdbcType=INTEGER},
+    day_timeout_times = #{dayTimeoutTimes,jdbcType=INTEGER},
+    day_freeze_times = #{dayFreezeTimes,jdbcType=INTEGER},
+    last_success_time = #{lastSuccessTime,jdbcType=TIMESTAMP},
+    last_fail_time = #{lastFailTime,jdbcType=TIMESTAMP},
+    last_send_status = #{lastSendStatus,jdbcType=TINYINT},
+    continuous_failure_times = #{continuousFailureTimes,jdbcType=INTEGER},
+    last_1min_failure_times = #{last1minFailureTimes,jdbcType=INTEGER},
+    create_time = #{createTime,jdbcType=TIMESTAMP},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where stats_id = #{statsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateTimesSelective">
+    update t_platform_email_daily_stats
+    <set>
+      <if test="daySuccessTimes != null">
+        day_success_times = day_success_times + #{daySuccessTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayFailTimes != null">
+        day_fail_times = day_fail_times + #{dayFailTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayTimeoutTimes != null">
+        day_timeout_times = day_timeout_times + #{dayTimeoutTimes,jdbcType=INTEGER},
+      </if>
+      <if test="dayFreezeTimes != null">
+        day_freeze_times = day_freeze_times + #{dayFreezeTimes,jdbcType=INTEGER},
+      </if>
+      <if test="lastSuccessTime != null">
+        last_success_time = #{lastSuccessTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastFailTime != null">
+        last_fail_time = #{lastFailTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="continuousFailureTimes != null">
+        continuous_failure_times = continuous_failure_times + #{continuousFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="last1minFailureTimes != null">
+        last_1min_failure_times = last_1min_failure_times + #{last1minFailureTimes,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastSendStatus != null">
+        last_send_status = #{lastSendStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where stats_id = #{statsId,jdbcType=BIGINT}
+  </update>
+  <update id="updateFailureTimes">
+    update t_platform_email_daily_stats
+    set continuous_failure_times = #{continuousFailureTimes,jdbcType=INTEGER},
+    last_1min_failure_times = #{last1minFailureTimes,jdbcType=INTEGER},
+    update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where stats_id = #{statsId,jdbcType=BIGINT}
+  </update>
+</mapper>

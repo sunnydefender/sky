@@ -47,6 +47,7 @@ public class EmailTaskInitializer {
             List<PlatformEmail> platformEmailList = platformEmailMapper.selectAllListByEmailGroup(platformEmailGroupList[i].name());
             int n = 0;
             for (PlatformEmail email : platformEmailList) {
+                context.sleepMilis = email.getSendIntervalSeconds() * 1000;
                 context.platformEmail = email;
                 new Thread(new EmailExecuteRunnable(context), "email-" + platformEmailGroupList[i] + "-" + n++).start();
             }

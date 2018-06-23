@@ -1,6 +1,10 @@
 package com.sky.ico.executor.email;
 
+import com.sky.framework.common.exception.ErrorCode;
+import com.sky.framework.common.id.IdUtils;
+import com.sky.framework.common.utils.ExceptionUtil;
 import com.sky.framework.common.utils.JsonUtil;
+import com.sky.framework.common.utils.DateUtil;
 import com.sky.framework.task.Task;
 import com.sky.framework.task.TaskManager;
 import com.sky.framework.task.entity.TaskPO;
@@ -8,15 +12,18 @@ import com.sky.framework.task.enums.TaskMode;
 import com.sky.framework.task.enums.TaskResult;
 import com.sky.framework.task.handler.ITaskHandler;
 import com.sky.framework.task.handler.TaskExecuteResult;
-import com.sky.framework.task.util.DateUtil;
 import com.sky.framework.task.util.TaskRedisLock;
 import com.sky.ico.service.common.EmailExecuteContext;
+import com.sky.ico.service.data.dao.PlatformEmailDailyStatsMapper;
 import com.sky.ico.service.data.dao.PlatformEmailMapper;
 import com.sky.ico.service.data.dao.PlatformEmailSendMapper;
 import com.sky.ico.service.data.entity.PlatformEmail;
+import com.sky.ico.service.data.entity.PlatformEmailDailyStats;
 import com.sky.ico.service.data.entity.PlatformEmailSend;
+import com.sky.ico.service.data.entity.builder.PlatformEmailDailyStatsBuilder;
 import com.sky.ico.service.enums.EmailSendStatus;
 import com.sky.ico.service.enums.PlatformEmailStatus;
+import com.sky.ico.service.errorcode.CommonErrorCode;
 import com.sky.ico.service.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +45,13 @@ public class EmailSendHandler implements ITaskHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailSendHandler.class);
     private static final String LOCK_ID_EMAIL_SENDER = "email.sender";
     
-    @Value("${captcha.expire}")
+    @Value("${captcha.expire:300}")
     private int captchaExpire;
 
     @Value("${pinCode.expire:300}")
     private int pinCodeExpire;
 
-    @Value("${pinCode.push.expire}")
+    @Value("${pinCode.push.expire:300}")
     private int pinCodePushExpire;
 
     @Autowired
@@ -61,6 +68,9 @@ public class EmailSendHandler implements ITaskHandler {
 
     @Autowired
     private PlatformEmailSendMapper platformEmailSendMapper;
+
+    @Autowired
+    private PlatformEmailDailyStatsMapper platformEmailDailyStatsMapper;
 
     private Random random = new Random();
 
@@ -87,13 +97,16 @@ public class EmailSendHandler implements ITaskHandler {
 
     public TaskExecuteResult doJob(TaskPO taskPO, PlatformEmail local) {
         PlatformEmail platformEmail = platformEmailMapper.selectByPrimaryKey(local.getEmailId());
+        PlatformEmail updatePlatformEmail = new PlatformEmail();
+        updatePlatformEmail.setEmailId(platformEmail.getEmailId());
+        PlatformEmailDailyStats platformEmailDailyStats = selectPlatformEmailDailyStats(platformEmail);
         TaskExecuteResult result = new TaskExecuteResult();
 
         if (platformEmail.getEmailStatus() != PlatformEmailStatus.AVAILABLE.getValue()) {
             LOGGER.info("邮箱暂时不可用.platformEmail={}", JsonUtil.toJSONString(platformEmail));
 
             moveEmailSendTask(taskPO, platformEmail);
-            result.setTaskResult(TaskResult.FAIL);
+            result.setTaskResult(TaskResult.MOVE);
             return result;
         }
 
@@ -105,8 +118,18 @@ public class EmailSendHandler implements ITaskHandler {
         Date timeout = DateUtil.addSeconds(platformEmailSend.getApplyTime(), pinCodeExpire);
         if (current.compareTo(timeout) >= 0) {
             LOGGER.debug("邮件发送超时. platformEmailSend={}", JsonUtil.toJSONString(platformEmailSend));
+
+            updatePlatformEmailSend.setSendStatus(EmailSendStatus.FAIL.getValue());
+            updatePlatformEmailSend.setResult(ErrorCode.FAIL);
+            updatePlatformEmailSend.setFailCode(CommonErrorCode.Email.SEND_TIMEOUT.getFailCode());
+            updatePlatformEmailSend.setUpdateTime(current);
+            platformEmailSendMapper.updateByPrimaryKeySelective(updatePlatformEmailSend);
+
             platformEmailMapper.updateTimesSelective(platformEmail.getEmailId(), null, null, 1, null, current);
             result.setTaskResult(TaskResult.FAIL);
+
+            platformEmailDailyStatsMapper.updateTimesSelective(platformEmailDailyStats.getStatsId(),
+                    null, null, 1, null, null, null, null, null, current, null);
             return result;
         }
 
@@ -118,11 +141,32 @@ public class EmailSendHandler implements ITaskHandler {
             updatePlatformEmailSend.setUpdateTime(current);
             platformEmailSendMapper.updateByPrimaryKeySelective(updatePlatformEmailSend);
 
-            platformEmailMapper.updateTimesSelective(platformEmail.getEmailId(), 1, 0, 0, 0, current);
+            platformEmailMapper.updateTimesSelective(platformEmail.getEmailId(), 1, null, null, null, current);
+
+            platformEmailDailyStatsMapper.updateTimesSelective(platformEmailDailyStats.getStatsId(),
+                    1, null, null, null, current, null, null, null, current, ErrorCode.SUCCESS);
+            platformEmailDailyStatsMapper.updateFailureTimes(platformEmailDailyStats.getStatsId(),
+                    0, 0, current);
 
         }catch (Exception e) {
             LOGGER.debug("发送注册邮件失败.", e);
-            platformEmailMapper.updateTimesSelective(platformEmail.getEmailId(), 0, 1, 0, 0, current);
+            current = new Date();
+            platformEmailDailyStats.setContinuousFailureTimes(platformEmailDailyStats.getContinuousFailureTimes() + 1);
+            if (platformEmailDailyStats.getContinuousFailureTimes() > platformEmail.getFreezeContinuousFailureTimes()) {
+                updatePlatformEmail.setEmailStatus(PlatformEmailStatus.FROZEN.getValue());
+                updatePlatformEmail.setFreezeStartTime(current);
+                updatePlatformEmail.setFreezeEndTime(DateUtil.addDays(DateUtil.addMinutes(current, 10), 1));
+                updatePlatformEmail.setUpdateTime(current);
+                platformEmailMapper.updateByPrimaryKeySelective(updatePlatformEmail);
+
+                platformEmailMapper.updateTimesSelective(platformEmail.getEmailId(), 0, 1, 0, 1, current);
+                platformEmailDailyStatsMapper.updateTimesSelective(platformEmailDailyStats.getStatsId(),
+                        null, 1, null, 1, null, current, 1, 1, current, ErrorCode.FAIL);
+            } else {
+                platformEmailMapper.updateTimesSelective(platformEmail.getEmailId(), 0, 1, 0, 0, current);
+                platformEmailDailyStatsMapper.updateTimesSelective(platformEmailDailyStats.getStatsId(),
+                        null, 1, null, null, null, current, 1, 1, current, ErrorCode.FAIL);
+            }
 
             if (taskPO.getRetriedTimes() < 3) {
                 result.setTaskResult(TaskResult.RETRY);
@@ -132,7 +176,9 @@ public class EmailSendHandler implements ITaskHandler {
             LOGGER.debug("注册邮件已超过投递次数. platformEmailSend={}", JsonUtil.toJSONString(platformEmailSend));
 
             updatePlatformEmailSend.setSendStatus(EmailSendStatus.FAIL.getValue());
-            current = new Date();
+            updatePlatformEmailSend.setResult(ErrorCode.FAIL);
+            updatePlatformEmailSend.setFailCode(CommonErrorCode.Email.OVER_MAX_RETRY_TIMES.getFailCode());
+            updatePlatformEmailSend.setFailReason(ExceptionUtil.buildFailReason(e));
             updatePlatformEmailSend.setUpdateTime(current);
             platformEmailSendMapper.updateByPrimaryKeySelective(updatePlatformEmailSend);
 
@@ -141,10 +187,24 @@ public class EmailSendHandler implements ITaskHandler {
         }
 
         result.setTaskResult(TaskResult.SUCCESS);
+        int i=0;
+        i = i/i;
         return result;
     }
 
-    public boolean moveEmailSendTask(TaskPO taskPO, PlatformEmail platformEmail) {
+    private PlatformEmailDailyStats selectPlatformEmailDailyStats(PlatformEmail platformEmail) {
+        Date current = new Date();
+        String dayDate = DateUtil.formatDate(current, DateUtil.YYYYMMDD);
+        PlatformEmailDailyStats stats = platformEmailDailyStatsMapper.selectByEmailIdAndDayDate(platformEmail.getEmailId(), dayDate);
+        if (null == stats) {
+            long statsId = IdUtils.getInstance().createPrimaryKeyId();
+            stats = PlatformEmailDailyStatsBuilder.build(platformEmail, statsId, dayDate);
+            platformEmailDailyStatsMapper.insert(stats);
+        }
+        return stats;
+    }
+
+    private boolean moveEmailSendTask(TaskPO taskPO, PlatformEmail platformEmail) {
         List<PlatformEmail> availableList = platformEmailMapper.selectAvailableListByEmailGroup(platformEmail.getEmailGroup());
 
         if (null == availableList || availableList.size() == 0) {

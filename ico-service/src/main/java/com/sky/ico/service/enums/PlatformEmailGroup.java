@@ -12,6 +12,6 @@ public enum PlatformEmailGroup {
             case REGISTER:
                 return PlatformEmailGroup.REGISTER.name();
         }
-        throw new BusinessException(CommonErrorCode.Email.PLATFORM_EMAL_GROUP_FROM_BUSINESS_MODE_ERROR);
+        throw new BusinessException(CommonErrorCode.Email.FAIL_GET_PLATFORM_EMAL_BY_BUSINESS_MODE);
     }
 }

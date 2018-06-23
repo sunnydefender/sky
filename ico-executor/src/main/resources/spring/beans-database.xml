@@ -86,6 +86,12 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txAdvicePointCutChildTask" />
 	</aop:config>
 
+	<aop:config>
+		<aop:pointcut id="txAdvicePointCutEmail"
+					  expression="execution(* com.sky.ico.executor.email.EmailSendHandler.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txAdvicePointCutEmail" />
+	</aop:config>
+
 	<tx:advice id="txAdvice" transaction-manager="appTransactionManager">
 		<tx:attributes>
 			<tx:method name="*" propagation="REQUIRED" />

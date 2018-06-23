@@ -5,6 +5,7 @@ import com.sky.framework.common.id.IdUtils;
 import com.sky.framework.redis.RedisData;
 import com.sky.framework.task.Task;
 import com.sky.framework.task.TaskManager;
+import com.sky.framework.task.enums.TaskMode;
 import com.sky.ico.service.common.EmailExecuteContext;
 import com.sky.ico.service.constant.RedisConfigKey;
 import com.sky.ico.service.data.entity.PlatformEmail;
@@ -20,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -58,7 +58,7 @@ public class EmailVerificationCodeService {
         redisTemplate.delete(fieldId);
     }
 
-    public void sendVerificationCode(HttpServletRequest request, EmailVerificationCodeParamDTO paramDTO) {
+    public void sendVerificationCode(EmailVerificationCodeParamDTO paramDTO) {
         // TODO: 频率控制
         String pinCode = String.format("%06d", random.nextInt(1000000));
         String fieldId = buildFieldId(paramDTO.getBusinessMode(), paramDTO.getBusinessId());
@@ -76,6 +76,7 @@ public class EmailVerificationCodeService {
 
         Task task = Task.build(EmailExecuteContext.buildEmailHandler("EmailSendHandler", platformEmail.getEmailGroup(), platformEmail.getUsername()),
                 String.valueOf(platformEmailSend.getSendId()), 3, 10000);
+        task.setTaskMode(TaskMode.SPECIAL);
         taskManager.pushTask(task);
     }
 

@@ -72,20 +72,22 @@ NOW()
 
 CREATE TABLE `t_platform_email_daily_stats` (
 	`stats_id` bigint unsigned not null comment '统计id',
-	`day_date` varchar(16) not null comment '当日日期:YYYY-MM-DD',
 	`email_id` bigint unsigned not null comment '邮箱id',
+	`day_date` varchar(16) not null comment '当日日期:YYYYMMDD',
 	`username` varchar(128) not null comment '邮箱账号',
 	`day_success_times` int not null comment '当日成功次数',
 	`day_fail_times` int not null comment '当日失败次数',
 	`day_timeout_times` int not null comment '当日超时次数',
 	`day_freeze_times` int unsigned not null comment '当日冻结次数',
-	`last_success_time` datetime not null comment '最近成功时间',
-	`last_fail_time` datetime not null comment '最近失败时间',
-	`continuous_failure_times` int not null comment '连续失败次数',
+	`last_success_time` datetime null comment '最近成功时间',
+	`last_fail_time` datetime null comment '最近失败时间',
+	`last_send_status` tinyint unsigned not null COMMENT '最近发送状态: 98-成功; 99-失败',
+	`continuous_failure_times` int not null comment '最近连续失败次数',
 	`last_1min_failure_times` int not null comment '最近1分钟失败次数',
 	`create_time` datetime not null comment '创建时间',
 	`update_time` datetime not null comment '更新时间',
   PRIMARY KEY (`stats_id`),
+  UNIQUE KEY `uk_email_id_day_date` (`email_id`, `day_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='平台邮箱日统计数据';
 
 

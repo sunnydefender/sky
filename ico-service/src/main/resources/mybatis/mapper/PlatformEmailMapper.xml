@@ -286,7 +286,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where email_id = #{emailId,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKeySelective">
+  <update id="updateTimesSelective">
     update t_platform_email
     <set>
       <if test="successTimes != null">

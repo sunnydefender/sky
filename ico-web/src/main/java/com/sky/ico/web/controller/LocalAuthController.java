@@ -2,6 +2,7 @@ package com.sky.ico.web.controller;
 
 import com.sky.framework.common.dto.base.BaseResultDTO;
 import com.sky.framework.common.exception.ErrorCode;
+import com.sky.framework.common.utils.NetworkUtil;
 import com.sky.ico.service.dto.EmailRegisterParamDTO;
 import com.sky.ico.service.service.LocalAuthService;
 import org.slf4j.Logger;
@@ -30,6 +31,6 @@ public class LocalAuthController {
     @RequestMapping(value = "/email/register", method = POST)
     @ResponseBody
     public BaseResultDTO emailRegister(HttpServletRequest request, @RequestBody EmailRegisterParamDTO paramDTO) {
-        return localAuthService.emailRegister(request, paramDTO);
+        return localAuthService.emailRegister(paramDTO, NetworkUtil.getIp(request));
     }
 }

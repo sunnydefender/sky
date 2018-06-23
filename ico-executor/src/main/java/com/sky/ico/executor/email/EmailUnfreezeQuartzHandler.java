@@ -1,13 +1,11 @@
 package com.sky.ico.executor.email;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sky.framework.common.utils.JsonUtil;
 import com.sky.framework.task.QuartzHandler;
 import com.sky.framework.task.handler.IQuartzHandler;
 import com.sky.framework.task.util.DateUtil;
 import com.sky.ico.service.data.dao.PlatformEmailMapper;
 import com.sky.ico.service.data.entity.PlatformEmail;
-import com.sky.ico.service.enums.EmailSendStatus;
 import com.sky.ico.service.enums.PlatformEmailGroup;
 import com.sky.ico.service.enums.PlatformEmailStatus;
 import org.slf4j.Logger;
@@ -21,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by easyfun on 2018/6/4.
  */
-@QuartzHandler(initialDelay = 30, delay = 30, unit = TimeUnit.SECONDS)
+@QuartzHandler(initialDelay = 30, delay = 180, unit = TimeUnit.SECONDS)
 public class EmailUnfreezeQuartzHandler implements IQuartzHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailUnfreezeQuartzHandler.class);
 
