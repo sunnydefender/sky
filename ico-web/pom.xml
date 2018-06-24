@@ -137,10 +137,16 @@
     <build>
         <finalName>ROOT</finalName>
 
+        <filters>
+            <filter>src/main/resources/config/${environment}.properties</filter>
+        </filters>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
                 <targetPath>${basedir}/target/classes</targetPath>
+                <excludes>
+                    <exclude>config/**</exclude>
+                </excludes>
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -176,6 +182,12 @@
     </build>
 
     <profiles>
+        <profile>
+            <id>local</id>
+            <properties>
+                <environment>local</environment>
+            </properties>
+        </profile>
         <profile>
             <id>dev</id>
             <properties>
