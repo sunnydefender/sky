@@ -29,24 +29,6 @@ public class EmailService {
 
     private Random random = new Random();
 
-    public void sendEmail(PlatformEmail platformEmail, String toAddress, String subject, String content){
-        Email email = new SimpleEmail();
-        try {
-            email.setHostName(platformEmail.getSmtpHost());
-            email.setSmtpPort(platformEmail.getSmtpPort());
-            email.setAuthenticator(new DefaultAuthenticator(platformEmail.getUsername(), platformEmail.getPassword()));
-            email.setSSLOnConnect(true);
-            email.setFrom(platformEmail.getUsername(), "SkyIco");
-            email.setSubject(subject);
-            email.setMsg(content);
-            email.addTo(toAddress);
-            email.send();
-        }catch (EmailException e){
-            LOGGER.error("发送邮件失败.paltformEmail="+ JsonUtil.toJSONString(platformEmail)+ ", 收件人: " + toAddress, e);
-            throw new BusinessException(CommonErrorCode.Email.SEND_EMAIL_ERROR, e);
-        }
-    }
-
     public PlatformEmail getPlatformEmail(BusinessMode businessMode) {
         List<PlatformEmail> platformEmails = platformEmailMapper.selectAvailableListByEmailGroup(PlatformEmailGroup.buildPlatformEmailGroup(businessMode));
         if (CollectionUtils.isEmpty(platformEmails)) {

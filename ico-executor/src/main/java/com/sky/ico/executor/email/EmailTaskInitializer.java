@@ -35,7 +35,7 @@ public class EmailTaskInitializer {
     @PostConstruct
     public void start() {
         EmailExecuteContext context = new EmailExecuteContext();
-        context.handler = emailSendHandler.getClass().getSimpleName();
+        context.handler = "EmailSendHandler";
         context.sleepMilis = 6000;
         context.executeStrategy = ExecuteStrategy.NORMAL;
         context.taskHandler = emailSendHandler;

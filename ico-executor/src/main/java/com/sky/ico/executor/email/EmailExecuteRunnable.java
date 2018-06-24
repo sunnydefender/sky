@@ -80,6 +80,8 @@ public class EmailExecuteRunnable implements Runnable {
     }
 
     private void executeTask(TaskPO taskPO) {
+        Date current = new Date();
+        TaskPOBuilder.updateLastTime(taskPO, current);
         if (null == taskPO.getFirstTime()) {
             taskPO.setFirstTime(new Date());
         }
@@ -134,9 +136,6 @@ public class EmailExecuteRunnable implements Runnable {
     }
 
     private void exceptionRetryTask(TaskPO taskPO) {
-        Date current = new Date();
-        TaskPOBuilder.updateLastTime(taskPO, current);
-
         taskPO.setNextTime(DateUtil.addMiliSeconds(taskPO.getNextTime(), taskPO.getRetryInterval()));
 
         if (taskPO.getRetryStrategy() == RetryStrategy.NORMAL.getValue() && taskPO.getRetriedTimes() >= taskPO.getMaxRetryTimes()) {
@@ -150,12 +149,7 @@ public class EmailExecuteRunnable implements Runnable {
 
     private void moveTask(TaskExecuteResult result, TaskPO taskPO) {
         taskPO.setProgress(result.getProgress());
-
-        Date current = new Date();
-        TaskPOBuilder.updateLastTime(taskPO, current);
-
         taskPO.setNextTime(DateUtil.addMiliSeconds(taskPO.getNextTime(), taskPO.getRetryInterval()));
-
         taskPO.setTaskStatus(TaskStatus.RETRYING.getValue());
         taskManager.moveTask(taskPO);
     }

@@ -14,6 +14,12 @@
 
     <profiles>
         <profile>
+            <id>t500</id>
+            <properties>
+                <environment>t500</environment>
+            </properties>
+        </profile>
+        <profile>
             <id>local</id>
             <properties>
                 <environment>local</environment>
