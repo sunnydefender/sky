@@ -9,6 +9,8 @@ public class PlatformEmail {
 
     private String password;
 
+    private String platformName;
+
     private String smtpHost;
 
     private Integer smtpPort;
@@ -65,6 +67,14 @@ public class PlatformEmail {
 
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    public String getPlatformName() {
+        return platformName;
+    }
+
+    public void setPlatformName(String platformName) {
+        this.platformName = platformName == null ? null : platformName.trim();
     }
 
     public String getSmtpHost() {

@@ -23,7 +23,7 @@ public class EmailUtil {
         email.setSmtpPort(platformEmail.getSmtpPort());
         email.setAuthenticator(new DefaultAuthenticator(platformEmail.getUsername(), platformEmail.getPassword()));
         email.setSSLOnConnect(true);
-        email.setFrom(platformEmail.getUsername(), "SkyIco");
+        email.setFrom(platformEmail.getUsername(), platformEmail.getPlatformName());
         email.setSubject(subject);
         email.setMsg(content);
         email.addTo(toAddress);

@@ -5,6 +5,7 @@
     <id column="email_id" jdbcType="BIGINT" property="emailId" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="platform_name" jdbcType="VARCHAR" property="platformName" />
     <result column="smtp_host" jdbcType="VARCHAR" property="smtpHost" />
     <result column="smtp_port" jdbcType="INTEGER" property="smtpPort" />
     <result column="email_mode" jdbcType="TINYINT" property="emailMode" />
@@ -24,10 +25,10 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    email_id, username, password, smtp_host, smtp_port, email_mode, email_function, email_group, 
-    email_status, send_interval_seconds, success_times, fail_times, timeout_times, freeze_continuous_failure_times, 
-    freeze_last_1min_failure_times, freeze_times, freeze_start_time, freeze_end_time, 
-    create_time, update_time
+    email_id, username, password, platform_name, smtp_host, smtp_port, email_mode, email_function, 
+    email_group, email_status, send_interval_seconds, success_times, fail_times, timeout_times, 
+    freeze_continuous_failure_times, freeze_last_1min_failure_times, freeze_times, freeze_start_time, 
+    freeze_end_time, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -35,40 +36,24 @@
     from t_platform_email
     where email_id = #{emailId,jdbcType=BIGINT}
   </select>
-
-  <select id="selectAvailableListByEmailGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_platform_email
-    where email_group = #{emailGroup,jdbcType=VARCHAR}
-    and email_status = 1
-  </select>
-
-  <select id="selectAllListByEmailGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from t_platform_email
-    where email_group = #{emailGroup,jdbcType=VARCHAR}
-  </select>
-
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_platform_email
     where email_id = #{emailId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.sky.ico.service.data.entity.PlatformEmail">
     insert into t_platform_email (email_id, username, password, 
-      smtp_host, smtp_port, email_mode, 
-      email_function, email_group, email_status, 
-      send_interval_seconds, success_times, fail_times, 
-      timeout_times, freeze_continuous_failure_times, 
+      platform_name, smtp_host, smtp_port, 
+      email_mode, email_function, email_group, 
+      email_status, send_interval_seconds, success_times, 
+      fail_times, timeout_times, freeze_continuous_failure_times, 
       freeze_last_1min_failure_times, freeze_times, 
       freeze_start_time, freeze_end_time, create_time, 
       update_time)
     values (#{emailId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{smtpHost,jdbcType=VARCHAR}, #{smtpPort,jdbcType=INTEGER}, #{emailMode,jdbcType=TINYINT}, 
-      #{emailFunction,jdbcType=TINYINT}, #{emailGroup,jdbcType=VARCHAR}, #{emailStatus,jdbcType=TINYINT}, 
-      #{sendIntervalSeconds,jdbcType=INTEGER}, #{successTimes,jdbcType=INTEGER}, #{failTimes,jdbcType=INTEGER}, 
-      #{timeoutTimes,jdbcType=INTEGER}, #{freezeContinuousFailureTimes,jdbcType=INTEGER}, 
+      #{platformName,jdbcType=VARCHAR}, #{smtpHost,jdbcType=VARCHAR}, #{smtpPort,jdbcType=INTEGER}, 
+      #{emailMode,jdbcType=TINYINT}, #{emailFunction,jdbcType=TINYINT}, #{emailGroup,jdbcType=VARCHAR}, 
+      #{emailStatus,jdbcType=TINYINT}, #{sendIntervalSeconds,jdbcType=INTEGER}, #{successTimes,jdbcType=INTEGER}, 
+      #{failTimes,jdbcType=INTEGER}, #{timeoutTimes,jdbcType=INTEGER}, #{freezeContinuousFailureTimes,jdbcType=INTEGER}, 
       #{freezeLast1minFailureTimes,jdbcType=INTEGER}, #{freezeTimes,jdbcType=INTEGER}, 
       #{freezeStartTime,jdbcType=TIMESTAMP}, #{freezeEndTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
@@ -84,6 +69,9 @@
       </if>
       <if test="password != null">
         password,
+      </if>
+      <if test="platformName != null">
+        platform_name,
       </if>
       <if test="smtpHost != null">
         smtp_host,
@@ -147,6 +135,9 @@
       <if test="password != null">
         #{password,jdbcType=VARCHAR},
       </if>
+      <if test="platformName != null">
+        #{platformName,jdbcType=VARCHAR},
+      </if>
       <if test="smtpHost != null">
         #{smtpHost,jdbcType=VARCHAR},
       </if>
@@ -209,6 +200,9 @@
       <if test="password != null">
         password = #{password,jdbcType=VARCHAR},
       </if>
+      <if test="platformName != null">
+        platform_name = #{platformName,jdbcType=VARCHAR},
+      </if>
       <if test="smtpHost != null">
         smtp_host = #{smtpHost,jdbcType=VARCHAR},
       </if>
@@ -267,6 +261,7 @@
     update t_platform_email
     set username = #{username,jdbcType=VARCHAR},
       password = #{password,jdbcType=VARCHAR},
+      platform_name = #{platformName,jdbcType=VARCHAR},
       smtp_host = #{smtpHost,jdbcType=VARCHAR},
       smtp_port = #{smtpPort,jdbcType=INTEGER},
       email_mode = #{emailMode,jdbcType=TINYINT},
@@ -286,6 +281,22 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where email_id = #{emailId,jdbcType=BIGINT}
   </update>
+
+  <select id="selectAvailableListByEmailGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_platform_email
+    where email_group = #{emailGroup,jdbcType=VARCHAR}
+    and email_status = 1
+  </select>
+
+  <select id="selectAllListByEmailGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_platform_email
+    where email_group = #{emailGroup,jdbcType=VARCHAR}
+  </select>
+
   <update id="updateTimesSelective">
     update t_platform_email
     <set>

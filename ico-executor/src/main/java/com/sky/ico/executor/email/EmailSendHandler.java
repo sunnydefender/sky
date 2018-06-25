@@ -122,17 +122,13 @@ public class EmailSendHandler implements ITaskHandler {
         if (current.compareTo(timeout) >= 0) {
             LOGGER.debug("邮件发送超时. platformEmailSend={}", JsonUtil.toJSONString(platformEmailSend));
 
-            updatePlatformEmailSend.setSendStatus(EmailSendStatus.FAIL.getValue());
-            updatePlatformEmailSend.setResult(ErrorCode.FAIL);
-            updatePlatformEmailSend.setFailCode(CommonErrorCode.Email.SEND_TIMEOUT.getFailCode());
-            updatePlatformEmailSend.setUpdateTime(current);
-            platformEmailSendMapper.updateByPrimaryKeySelective(updatePlatformEmailSend);
+            failPlatformEmailSend(updatePlatformEmailSend, CommonErrorCode.Email.SEND_TIMEOUT.getFailCode(), "");
 
             platformEmailMapper.updateTimesSelective(platformEmail.getEmailId(), null, null, 1, null, current);
-            result.setTaskResult(TaskResult.FAIL);
-
             platformEmailDailyStatsMapper.updateTimesSelective(platformEmailDailyStats.getStatsId(),
                     null, null, 1, null, null, null, null, null, current, null);
+
+            result.setTaskResult(TaskResult.FAIL);
             return result;
         }
 
@@ -161,7 +157,7 @@ public class EmailSendHandler implements ITaskHandler {
                 cause = t;
                 t = t.getCause();
             }
-            updatePlatformEmailSend(updatePlatformEmailSend, CommonErrorCode.Email.SEND_EMAIL_ERROR.getFailCode(), ExceptionUtil.buildFailReason(cause));
+            failPlatformEmailSend(updatePlatformEmailSend, CommonErrorCode.Email.SEND_EMAIL_ERROR.getFailCode(), ExceptionUtil.buildFailReason(cause));
             result.setTaskResult(TaskResult.FAIL);
             return result;
         } catch (Exception e) {
@@ -175,7 +171,7 @@ public class EmailSendHandler implements ITaskHandler {
             }
 
             LOGGER.debug("注册邮件已超过投递次数. platformEmailSend={}", JsonUtil.toJSONString(platformEmailSend));
-            updatePlatformEmailSend(updatePlatformEmailSend, CommonErrorCode.Email.OVER_MAX_RETRY_TIMES.getFailCode(), ExceptionUtil.buildFailReason(e));
+            failPlatformEmailSend(updatePlatformEmailSend, CommonErrorCode.Email.OVER_MAX_RETRY_TIMES.getFailCode(), ExceptionUtil.buildFailReason(e));
             result.setTaskResult(TaskResult.FAIL);
             return result;
         }
@@ -184,7 +180,7 @@ public class EmailSendHandler implements ITaskHandler {
         return result;
     }
 
-    private void updatePlatformEmailSend(PlatformEmailSend updatePlatformEmailSend, String failCode, String failReason) {
+    private void failPlatformEmailSend(PlatformEmailSend updatePlatformEmailSend, String failCode, String failReason) {
         updatePlatformEmailSend.setSendStatus(EmailSendStatus.FAIL.getValue());
         updatePlatformEmailSend.setResult(ErrorCode.FAIL);
         updatePlatformEmailSend.setFailCode(failCode);
